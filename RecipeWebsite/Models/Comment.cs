@@ -8,10 +8,11 @@ namespace RecipeWebsite.Models
         public int CommentId { get; set; }
 
         public int RecipeId { get; set; }
-
+        
         public int UserId { get; set; }
 
         // max length?
+        [Required]
         public string CommentContent { get; set; }
 
         public int Votes { get; set; }
