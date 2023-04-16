@@ -13,7 +13,7 @@ namespace RecipeWebsite.Models
 
         // max length?
         [Required]
-        public string CommentContent { get; set; }
+        public string Content { get; set; }
 
         public int Votes { get; set; }
     }
