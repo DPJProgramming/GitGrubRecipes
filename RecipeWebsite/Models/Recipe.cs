@@ -7,6 +7,12 @@ namespace RecipeWebsite.Models
         [Key]
         public int RecipeId { get; set; }
 
+        [Required]
+        public string Title { get; set; }
+
+        [Required]
+        public int UserId { get; set; }
+
         public string ImageUrl { get; set; }
 
         [Required]
@@ -15,6 +21,6 @@ namespace RecipeWebsite.Models
         [Required]
         public string Directions { get; set; }
 
-        // public List<Comment> comments { get; set; }
+        public List<Comment> Comments { get; set; }
     }
 }
