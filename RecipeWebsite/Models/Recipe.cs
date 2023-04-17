@@ -10,6 +10,7 @@ namespace RecipeWebsite.Models
         [Required]
         public string Title { get; set; }
 
+        [Required]
         public int UserId { get; set; }
 
         public string ImageUrl { get; set; }
