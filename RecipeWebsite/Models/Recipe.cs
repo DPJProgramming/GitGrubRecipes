@@ -44,6 +44,8 @@ namespace RecipeWebsite.Models
         /// <summary>
         /// A list of Comment objects that stores attached comments
         /// </summary>
-        public List<Comment> Comments { get; set; }
+        public ICollection<Comment> Comments { get; set; }
+
+        public ICollection<User> Users { get; set; }
     }
 }
