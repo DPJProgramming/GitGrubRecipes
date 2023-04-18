@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Identity;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RecipeWebsite.Models
 {
@@ -18,11 +20,6 @@ namespace RecipeWebsite.Models
         /// </summary>
         [Required]
         public string Title { get; set; }
-
-        /// <summary>
-        /// Unique identifier for user who submitted the recipe
-        /// </summary>
-        public int UserId { get; set; }
 
         /// <summary>
         /// URL that points at image
@@ -46,6 +43,6 @@ namespace RecipeWebsite.Models
         /// </summary>
         public ICollection<Comment> Comments { get; set; }
 
-        public ICollection<User> Users { get; set; }
+        public ICollection<User> UsersFavorited { get; set; }
     }
 }

@@ -12,12 +12,6 @@ namespace RecipeWebsite.Models
         /// </summary>
         [Key]
         public int CommentId { get; set; }
-
-        /// <summary>
-        /// Unique identifier for recipe
-        /// NOTE: Since comments are stored in recipe objects, the recipe ID might be redundant.
-        /// </summary>
-        public int RecipeId { get; set; }
         
         /// <summary>
         /// Unique identifier for user that submitted the comment
