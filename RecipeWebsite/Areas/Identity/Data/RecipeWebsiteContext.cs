@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using RecipeWebsite.Models;
 
 namespace RecipeWebsite.Data;
 
@@ -18,4 +19,6 @@ public class RecipeWebsiteContext : IdentityDbContext<IdentityUser>
         // For example, you can rename the ASP.NET Identity table names and more.
         // Add your customizations after calling base.OnModelCreating(builder);
     }
+
+    public DbSet<RecipeWebsite.Models.Recipe>? Recipe { get; set; }
 }
