@@ -54,7 +54,8 @@ app.UseAuthorization();
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    //changed this from Home to Recipe as the first page that loads
+    pattern: "{controller=Recipe}/{action=Index}/{id?}");
 
 app.MapRazorPages();
 
