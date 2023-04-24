@@ -22,7 +22,9 @@ namespace RecipeWebsite.Models
         /// <summary>
         /// Unique identifier for user who submitted the recipe
         /// </summary>
-        public int UserId { get; set; }
+        public String UserId { get; set; }
+
+        public User Author { get; set; }
 
         /// <summary>
         /// URL that points at image
