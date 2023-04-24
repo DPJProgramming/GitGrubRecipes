@@ -5,7 +5,7 @@ using RecipeWebsite.Models;
 
 namespace RecipeWebsite.Data;
 
-public class RecipeWebsiteContext : IdentityDbContext<IdentityUser>
+public class RecipeWebsiteContext : IdentityDbContext<User>
 {
     public RecipeWebsiteContext(DbContextOptions<RecipeWebsiteContext> options)
         : base(options)
@@ -18,7 +18,14 @@ public class RecipeWebsiteContext : IdentityDbContext<IdentityUser>
         // Customize the ASP.NET Identity model and override the defaults if needed.
         // For example, you can rename the ASP.NET Identity table names and more.
         // Add your customizations after calling base.OnModelCreating(builder);
+        builder.Entity<Recipe>()
+        .HasOne(r => r.Author)
+        .WithMany(u => u.AuthoredRecipes)
+        .HasForeignKey(r => r.UserId)
+        .OnDelete(DeleteBehavior.NoAction);
     }
 
     public DbSet<RecipeWebsite.Models.Recipe>? Recipe { get; set; }
+
+    public DbSet<User> User { get; set; }
 }
