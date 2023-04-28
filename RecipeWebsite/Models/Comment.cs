@@ -22,7 +22,7 @@ namespace RecipeWebsite.Models
         /// <summary>
         /// Unique identifier for user that submitted the comment
         /// </summary>
-        public User UserId { get; set; } = null!;
+        public User CommentAuthor { get; set; } = null!;
 
         /// <summary>
         /// The text content of the submitted comment

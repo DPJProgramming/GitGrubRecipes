@@ -22,7 +22,7 @@ namespace RecipeWebsite.Models
         /// <summary>
         /// User who submitted the recipe
         /// </summary>
-        public User? Author { get; set; }
+        public User Author { get; set; } = null!;
 
         /// <summary>
         /// URL that points at image
@@ -46,6 +46,6 @@ namespace RecipeWebsite.Models
         /// </summary>
         public ICollection<Comment>? Comments { get; set; }
 
-        //public ICollection<User> Users { get; set; }
+        public ICollection<User>? UsersFavorited { get; set; }
     }
 }

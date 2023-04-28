@@ -9,7 +9,7 @@ var connectionString = builder.Configuration.GetConnectionString("RecipeWebsiteC
 builder.Services.AddDbContext<RecipeWebsiteContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<RecipeWebsiteContext>();
 
 // Add services to the container.
