@@ -17,35 +17,35 @@ namespace RecipeWebsite.Models
         /// Name of the recipe
         /// </summary>
         [Required]
-        public string Title { get; set; }
+        public string? Title { get; set; }
 
         /// <summary>
-        /// Unique identifier for user who submitted the recipe
+        /// User who submitted the recipe
         /// </summary>
-        public int UserId { get; set; }
+        public User? Author { get; set; }
 
         /// <summary>
         /// URL that points at image
         /// </summary>
-        public string ImageUrl { get; set; }
+        public string? ImageUrl { get; set; }
 
         /// <summary>
         /// A list of ingredients stored as a string
         /// </summary>
         [Required]
-        public string Ingredients { get; set; }
+        public string? Ingredients { get; set; }
 
         /// <summary>
         /// Steps to prepare recipe stored as a string
         /// </summary>
         [Required]
-        public string Directions { get; set; }
+        public string? Directions { get; set; }
 
         /// <summary>
         /// A list of Comment objects that stores attached comments
         /// </summary>
-        public ICollection<Comment> Comments { get; set; }
+        public ICollection<Comment>? Comments { get; set; }
 
-        public ICollection<User> Users { get; set; }
+        //public ICollection<User> Users { get; set; }
     }
 }
