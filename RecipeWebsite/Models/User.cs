@@ -11,11 +11,12 @@ namespace RecipeWebsite.Models {
         /// <summary>
         /// Represents comments that a user has made on a Recipe
         /// </summary>
-		public ICollection<Comment>? MyComments { get; set; }
+		    public ICollection<Comment>? MyComments { get; set; }
 
         /// <summary>
         /// Represents recipes that a user has created
         /// </summary>
         public ICollection<Recipe>? MyRecipes { get; set; } 
 	}
+
 }

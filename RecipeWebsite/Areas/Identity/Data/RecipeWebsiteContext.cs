@@ -18,14 +18,13 @@ public class RecipeWebsiteContext : IdentityDbContext<User>
         // Customize the ASP.NET Identity model and override the defaults if needed.
         // For example, you can rename the ASP.NET Identity table names and more.
         // Add your customizations after calling base.OnModelCreating(builder);
-
+        
         builder.Entity<Recipe>()
             .HasOne<User>(r => r.Author)
             .WithMany(u => u.MyRecipes);
-
     }
 
     public DbSet<RecipeWebsite.Models.Recipe>? Recipe { get; set; }
 
-	public DbSet<Comment>? Comments { get; set; }
+    public DbSet<Comment>? Comments { get; set; }
 }
