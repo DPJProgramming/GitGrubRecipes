@@ -1,13 +1,15 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RecipeWebsite.Data;
+using RecipeWebsite.Models;
+
 var builder = WebApplication.CreateBuilder(args);
 var connectionString = builder.Configuration.GetConnectionString("RecipeWebsiteContextConnection") ?? throw new InvalidOperationException("Connection string 'RecipeWebsiteContextConnection' not found.");
 
 builder.Services.AddDbContext<RecipeWebsiteContext>(options =>
     options.UseSqlServer(connectionString));
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+builder.Services.AddDefaultIdentity<User>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<RecipeWebsiteContext>();
 
 // Add services to the container.

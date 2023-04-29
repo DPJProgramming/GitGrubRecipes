@@ -12,8 +12,8 @@ using RecipeWebsite.Data;
 namespace RecipeWebsite.Migrations
 {
     [DbContext(typeof(RecipeWebsiteContext))]
-    [Migration("20230422184012_AddRecipeTable")]
-    partial class AddRecipeTable
+    [Migration("20230428194500_InitialMigrationWithClasses")]
+    partial class InitialMigrationWithClasses
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -74,77 +74,6 @@ namespace RecipeWebsite.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("AspNetRoleClaims", (string)null);
-                });
-
-            modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUser", b =>
-                {
-                    b.Property<string>("Id")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("AccessFailedCount")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ConcurrencyStamp")
-                        .IsConcurrencyToken()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Discriminator")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("LockoutEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<DateTimeOffset?>("LockoutEnd")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("NormalizedEmail")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("NormalizedUserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.Property<string>("PasswordHash")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("PhoneNumber")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("PhoneNumberConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("SecurityStamp")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<bool>("TwoFactorEnabled")
-                        .HasColumnType("bit");
-
-                    b.Property<string>("UserName")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("NormalizedEmail")
-                        .HasDatabaseName("EmailIndex");
-
-                    b.HasIndex("NormalizedUserName")
-                        .IsUnique()
-                        .HasDatabaseName("UserNameIndex")
-                        .HasFilter("[NormalizedUserName] IS NOT NULL");
-
-                    b.ToTable("AspNetUsers", (string)null);
-
-                    b.HasDiscriminator<string>("Discriminator").HasValue("IdentityUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
@@ -234,15 +163,15 @@ namespace RecipeWebsite.Migrations
 
             modelBuilder.Entity("RecipeUser", b =>
                 {
-                    b.Property<int>("FavoriteRecipesRecipeId")
+                    b.Property<int>("MyFavoritesRecipeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UsersId")
+                    b.Property<string>("UsersFavoritedId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("FavoriteRecipesRecipeId", "UsersId");
+                    b.HasKey("MyFavoritesRecipeId", "UsersFavoritedId");
 
-                    b.HasIndex("UsersId");
+                    b.HasIndex("UsersFavoritedId");
 
                     b.ToTable("RecipeUser");
                 });
@@ -255,14 +184,14 @@ namespace RecipeWebsite.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentId"), 1L, 1);
 
+                    b.Property<string>("CommentAuthorId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RecipeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
+                    b.Property<int>("ParentRecipeRecipeId")
                         .HasColumnType("int");
 
                     b.Property<int>("Votes")
@@ -270,9 +199,11 @@ namespace RecipeWebsite.Migrations
 
                     b.HasKey("CommentId");
 
-                    b.HasIndex("RecipeId");
+                    b.HasIndex("CommentAuthorId");
 
-                    b.ToTable("Comment");
+                    b.HasIndex("ParentRecipeRecipeId");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("RecipeWebsite.Models.Recipe", b =>
@@ -283,12 +214,15 @@ namespace RecipeWebsite.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RecipeId"), 1L, 1);
 
+                    b.Property<string>("AuthorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Directions")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Ingredients")
@@ -299,19 +233,76 @@ namespace RecipeWebsite.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("UserId")
-                        .HasColumnType("int");
-
                     b.HasKey("RecipeId");
+
+                    b.HasIndex("AuthorId");
 
                     b.ToTable("Recipe");
                 });
 
             modelBuilder.Entity("RecipeWebsite.Models.User", b =>
                 {
-                    b.HasBaseType("Microsoft.AspNetCore.Identity.IdentityUser");
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
 
-                    b.HasDiscriminator().HasValue("User");
+                    b.Property<int>("AccessFailedCount")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ConcurrencyStamp")
+                        .IsConcurrencyToken()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("LockoutEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset?>("LockoutEnd")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("NormalizedEmail")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("NormalizedUserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.Property<string>("PasswordHash")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PhoneNumber")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("PhoneNumberConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("SecurityStamp")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("TwoFactorEnabled")
+                        .HasColumnType("bit");
+
+                    b.Property<string>("UserName")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("NormalizedEmail")
+                        .HasDatabaseName("EmailIndex");
+
+                    b.HasIndex("NormalizedUserName")
+                        .IsUnique()
+                        .HasDatabaseName("UserNameIndex")
+                        .HasFilter("[NormalizedUserName] IS NOT NULL");
+
+                    b.ToTable("AspNetUsers", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -325,7 +316,7 @@ namespace RecipeWebsite.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserClaim<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("RecipeWebsite.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -334,7 +325,7 @@ namespace RecipeWebsite.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserLogin<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("RecipeWebsite.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -349,7 +340,7 @@ namespace RecipeWebsite.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("RecipeWebsite.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -358,7 +349,7 @@ namespace RecipeWebsite.Migrations
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityUserToken<string>", b =>
                 {
-                    b.HasOne("Microsoft.AspNetCore.Identity.IdentityUser", null)
+                    b.HasOne("RecipeWebsite.Models.User", null)
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -369,29 +360,55 @@ namespace RecipeWebsite.Migrations
                 {
                     b.HasOne("RecipeWebsite.Models.Recipe", null)
                         .WithMany()
-                        .HasForeignKey("FavoriteRecipesRecipeId")
+                        .HasForeignKey("MyFavoritesRecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("RecipeWebsite.Models.User", null)
                         .WithMany()
-                        .HasForeignKey("UsersId")
+                        .HasForeignKey("UsersFavoritedId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("RecipeWebsite.Models.Comment", b =>
                 {
-                    b.HasOne("RecipeWebsite.Models.Recipe", null)
+                    b.HasOne("RecipeWebsite.Models.User", "CommentAuthor")
+                        .WithMany("MyComments")
+                        .HasForeignKey("CommentAuthorId");
+
+                    b.HasOne("RecipeWebsite.Models.Recipe", "ParentRecipe")
                         .WithMany("Comments")
-                        .HasForeignKey("RecipeId")
+                        .HasForeignKey("ParentRecipeRecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("CommentAuthor");
+
+                    b.Navigation("ParentRecipe");
+                });
+
+            modelBuilder.Entity("RecipeWebsite.Models.Recipe", b =>
+                {
+                    b.HasOne("RecipeWebsite.Models.User", "Author")
+                        .WithMany("MyRecipes")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
                 });
 
             modelBuilder.Entity("RecipeWebsite.Models.Recipe", b =>
                 {
                     b.Navigation("Comments");
+                });
+
+            modelBuilder.Entity("RecipeWebsite.Models.User", b =>
+                {
+                    b.Navigation("MyComments");
+
+                    b.Navigation("MyRecipes");
                 });
 #pragma warning restore 612, 618
         }

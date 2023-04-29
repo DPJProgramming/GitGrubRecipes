@@ -17,18 +17,18 @@ namespace RecipeWebsite.Models
         /// Unique identifier for recipe
         /// NOTE: Since comments are stored in recipe objects, the recipe ID might be redundant.
         /// </summary>
-        public int RecipeId { get; set; }
+        public Recipe ParentRecipe { get; set; } = null!;
         
         /// <summary>
         /// Unique identifier for user that submitted the comment
         /// </summary>
-        public int UserId { get; set; }
+        public User CommentAuthor { get; set; } = null!;
 
         /// <summary>
         /// The text content of the submitted comment
         /// </summary>
         [Required]
-        public string Content { get; set; }
+        public string? Content { get; set; }
 
         /// <summary>
         /// An integer that stores the number of votes/likes a comment has

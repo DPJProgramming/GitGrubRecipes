@@ -161,15 +161,15 @@ namespace RecipeWebsite.Migrations
 
             modelBuilder.Entity("RecipeUser", b =>
                 {
-                    b.Property<int>("FavoriteRecipesRecipeId")
+                    b.Property<int>("MyFavoritesRecipeId")
                         .HasColumnType("int");
 
-                    b.Property<string>("UsersId")
+                    b.Property<string>("UsersFavoritedId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.HasKey("FavoriteRecipesRecipeId", "UsersId");
+                    b.HasKey("MyFavoritesRecipeId", "UsersFavoritedId");
 
-                    b.HasIndex("UsersId");
+                    b.HasIndex("UsersFavoritedId");
 
                     b.ToTable("RecipeUser");
                 });
@@ -182,14 +182,14 @@ namespace RecipeWebsite.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CommentId"), 1L, 1);
 
+                    b.Property<string>("CommentAuthorId")
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Content")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("RecipeId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("UserId")
+                    b.Property<int>("ParentRecipeRecipeId")
                         .HasColumnType("int");
 
                     b.Property<int>("Votes")
@@ -197,9 +197,11 @@ namespace RecipeWebsite.Migrations
 
                     b.HasKey("CommentId");
 
-                    b.HasIndex("RecipeId");
+                    b.HasIndex("CommentAuthorId");
 
-                    b.ToTable("Comment");
+                    b.HasIndex("ParentRecipeRecipeId");
+
+                    b.ToTable("Comments");
                 });
 
             modelBuilder.Entity("RecipeWebsite.Models.Recipe", b =>
@@ -210,12 +212,15 @@ namespace RecipeWebsite.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RecipeId"), 1L, 1);
 
+                    b.Property<string>("AuthorId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
                     b.Property<string>("Directions")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Ingredients")
@@ -226,13 +231,9 @@ namespace RecipeWebsite.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("UserId")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(450)");
-
                     b.HasKey("RecipeId");
 
-                    b.HasIndex("UserId");
+                    b.HasIndex("AuthorId");
 
                     b.ToTable("Recipe");
                 });
@@ -357,24 +358,43 @@ namespace RecipeWebsite.Migrations
                 {
                     b.HasOne("RecipeWebsite.Models.Recipe", null)
                         .WithMany()
-                        .HasForeignKey("FavoriteRecipesRecipeId")
+                        .HasForeignKey("MyFavoritesRecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.HasOne("RecipeWebsite.Models.User", null)
                         .WithMany()
-                        .HasForeignKey("UsersId")
+                        .HasForeignKey("UsersFavoritedId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
                 });
 
             modelBuilder.Entity("RecipeWebsite.Models.Comment", b =>
                 {
-                    b.HasOne("RecipeWebsite.Models.Recipe", null)
+                    b.HasOne("RecipeWebsite.Models.User", "CommentAuthor")
+                        .WithMany("MyComments")
+                        .HasForeignKey("CommentAuthorId");
+
+                    b.HasOne("RecipeWebsite.Models.Recipe", "ParentRecipe")
                         .WithMany("Comments")
-                        .HasForeignKey("RecipeId")
+                        .HasForeignKey("ParentRecipeRecipeId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("CommentAuthor");
+
+                    b.Navigation("ParentRecipe");
+                });
+
+            modelBuilder.Entity("RecipeWebsite.Models.Recipe", b =>
+                {
+                    b.HasOne("RecipeWebsite.Models.User", "Author")
+                        .WithMany("MyRecipes")
+                        .HasForeignKey("AuthorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Author");
                 });
 
             modelBuilder.Entity("RecipeWebsite.Models.Recipe", b =>
@@ -395,8 +415,11 @@ namespace RecipeWebsite.Migrations
 
             modelBuilder.Entity("RecipeWebsite.Models.User", b =>
                 {
-                    b.Navigation("AuthoredRecipes");
+                    b.Navigation("MyComments");
+
+                    b.Navigation("MyRecipes");
                 });
+                
 #pragma warning restore 612, 618
         }
     }
