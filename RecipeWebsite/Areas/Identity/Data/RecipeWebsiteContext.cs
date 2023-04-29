@@ -22,22 +22,10 @@ public class RecipeWebsiteContext : IdentityDbContext<User>
         builder.Entity<Recipe>()
             .HasOne<User>(r => r.Author)
             .WithMany(u => u.MyRecipes);
-            //.HasForeignKey
-
-        /*builder.Entity<User>()
-            .HasMany<Recipe>(u => u.MyFavorites)*/
 
     }
 
     public DbSet<RecipeWebsite.Models.Recipe>? Recipe { get; set; }
 
-    //public DbSet<User>? User { get; set; }
-
 	public DbSet<Comment>? Comments { get; set; }
-
-	/*public DbSet<MyFavorites>? myFavorites { get; set; }
-
-    public DbSet<MyComments>? MyComments { get; set; }
-
-    public DbSet<MyRecipes>? MyRecipes { get; set; }*/
 }
