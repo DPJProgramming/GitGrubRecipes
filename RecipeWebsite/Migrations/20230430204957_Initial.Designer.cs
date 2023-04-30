@@ -12,7 +12,7 @@ using RecipeWebsite.Data;
 namespace RecipeWebsite.Migrations
 {
     [DbContext(typeof(RecipeWebsiteContext))]
-    [Migration("20230430200712_Initial")]
+    [Migration("20230430204957_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -206,6 +206,32 @@ namespace RecipeWebsite.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("RecipeWebsite.Models.Ingredient", b =>
+                {
+                    b.Property<int>("IngredientId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("IngredientId"), 1L, 1);
+
+                    b.Property<string>("Amount")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("IngredientId");
+
+                    b.HasIndex("RecipeId");
+
+                    b.ToTable("Ingredient");
+                });
+
             modelBuilder.Entity("RecipeWebsite.Models.Recipe", b =>
                 {
                     b.Property<int>("RecipeId")
@@ -223,10 +249,6 @@ namespace RecipeWebsite.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<string>("Ingredients")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
@@ -388,6 +410,17 @@ namespace RecipeWebsite.Migrations
                     b.Navigation("ParentRecipe");
                 });
 
+            modelBuilder.Entity("RecipeWebsite.Models.Ingredient", b =>
+                {
+                    b.HasOne("RecipeWebsite.Models.Recipe", "Recipe")
+                        .WithMany("Ingredients")
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Recipe");
+                });
+
             modelBuilder.Entity("RecipeWebsite.Models.Recipe", b =>
                 {
                     b.HasOne("RecipeWebsite.Models.User", "Author")
@@ -402,6 +435,8 @@ namespace RecipeWebsite.Migrations
             modelBuilder.Entity("RecipeWebsite.Models.Recipe", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("Ingredients");
                 });
 
             modelBuilder.Entity("RecipeWebsite.Models.User", b =>

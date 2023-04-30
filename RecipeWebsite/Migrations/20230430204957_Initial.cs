@@ -163,7 +163,6 @@ namespace RecipeWebsite.Migrations
                     Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     AuthorId = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Ingredients = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Directions = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
                 constraints: table =>
@@ -205,6 +204,27 @@ namespace RecipeWebsite.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Ingredient",
+                columns: table => new
+                {
+                    IngredientId = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Amount = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    RecipeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Ingredient", x => x.IngredientId);
+                    table.ForeignKey(
+                        name: "FK_Ingredient_Recipe_RecipeId",
+                        column: x => x.RecipeId,
+                        principalTable: "Recipe",
+                        principalColumn: "RecipeId",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "RecipeUser",
                 columns: table => new
                 {
@@ -225,7 +245,7 @@ namespace RecipeWebsite.Migrations
                         column: x => x.MyFavoritesRecipeId,
                         principalTable: "Recipe",
                         principalColumn: "RecipeId",
-                        onDelete: ReferentialAction.NoAction); // manually changed
+                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(
@@ -278,6 +298,11 @@ namespace RecipeWebsite.Migrations
                 column: "ParentRecipeRecipeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Ingredient_RecipeId",
+                table: "Ingredient",
+                column: "RecipeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Recipe_AuthorId",
                 table: "Recipe",
                 column: "AuthorId");
@@ -307,6 +332,9 @@ namespace RecipeWebsite.Migrations
 
             migrationBuilder.DropTable(
                 name: "Comments");
+
+            migrationBuilder.DropTable(
+                name: "Ingredient");
 
             migrationBuilder.DropTable(
                 name: "RecipeUser");
