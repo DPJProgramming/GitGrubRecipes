@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using RecipeWebsite.Models;
+using System.Reflection.Emit;
 
 namespace RecipeWebsite.Data;
 
@@ -22,7 +23,14 @@ public class RecipeWebsiteContext : IdentityDbContext<User>
         builder.Entity<Recipe>()
             .HasOne<User>(r => r.Author)
             .WithMany(u => u.MyRecipes);
+
+        builder.Entity<Recipe>()
+            .HasMany(r => r.Ingredients)
+            .WithOne(i => i.Recipe)
+            .HasForeignKey(i => i.RecipeId);
     }
+
+    
 
     public DbSet<RecipeWebsite.Models.Recipe>? Recipe { get; set; }
 

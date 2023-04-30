@@ -33,7 +33,7 @@ namespace RecipeWebsite.Models
         /// A list of ingredients stored as a string
         /// </summary>
         [Required]
-        public string? Ingredients { get; set; }
+        public ICollection<Ingredient> Ingredients { get; set; }
 
         /// <summary>
         /// Steps to prepare recipe stored as a string
