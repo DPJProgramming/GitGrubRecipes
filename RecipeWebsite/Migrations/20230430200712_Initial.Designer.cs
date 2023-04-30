@@ -12,8 +12,8 @@ using RecipeWebsite.Data;
 namespace RecipeWebsite.Migrations
 {
     [DbContext(typeof(RecipeWebsiteContext))]
-    [Migration("20230428194500_InitialMigrationWithClasses")]
-    partial class InitialMigrationWithClasses
+    [Migration("20230430200712_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
