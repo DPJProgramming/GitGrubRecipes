@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace RecipeWebsite.Migrations
 {
-    public partial class InitialMigrationWithClasses : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -225,7 +225,7 @@ namespace RecipeWebsite.Migrations
                         column: x => x.MyFavoritesRecipeId,
                         principalTable: "Recipe",
                         principalColumn: "RecipeId",
-                        onDelete: ReferentialAction.NoAction);
+                        onDelete: ReferentialAction.NoAction); // manually changed
                 });
 
             migrationBuilder.CreateIndex(

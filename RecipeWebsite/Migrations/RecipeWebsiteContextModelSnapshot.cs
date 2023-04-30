@@ -399,17 +399,6 @@ namespace RecipeWebsite.Migrations
 
             modelBuilder.Entity("RecipeWebsite.Models.Recipe", b =>
                 {
-                    b.HasOne("RecipeWebsite.Models.User", "Author")
-                        .WithMany("AuthoredRecipes")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("Author");
-                });
-
-            modelBuilder.Entity("RecipeWebsite.Models.Recipe", b =>
-                {
                     b.Navigation("Comments");
                 });
 
@@ -419,7 +408,6 @@ namespace RecipeWebsite.Migrations
 
                     b.Navigation("MyRecipes");
                 });
-                
 #pragma warning restore 612, 618
         }
     }
