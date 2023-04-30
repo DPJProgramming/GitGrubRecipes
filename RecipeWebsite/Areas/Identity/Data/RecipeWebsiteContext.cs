@@ -28,6 +28,19 @@ public class RecipeWebsiteContext : IdentityDbContext<User>
             .HasMany(r => r.Ingredients)
             .WithOne(i => i.Recipe)
             .HasForeignKey(i => i.RecipeId);
+
+        builder.Entity<Recipe>()
+        .HasMany(r => r.UsersFavorited)
+        .WithMany(u => u.MyFavorites)
+        .UsingEntity<Dictionary<string, object>>(
+            "FavoriteRecipes",
+            x => x.HasOne<User>().WithMany().HasForeignKey("UserId").OnDelete(DeleteBehavior.Cascade),
+            x => x.HasOne<Recipe>().WithMany().HasForeignKey("RecipeId").OnDelete(DeleteBehavior.NoAction),
+            x =>
+            {
+                x.HasKey("UserId", "RecipeId");
+                x.ToTable("FavoriteRecipes");
+            });
     }
 
     

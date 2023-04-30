@@ -204,6 +204,29 @@ namespace RecipeWebsite.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "FavoriteRecipes",
+                columns: table => new
+                {
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
+                    RecipeId = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_FavoriteRecipes", x => new { x.UserId, x.RecipeId });
+                    table.ForeignKey(
+                        name: "FK_FavoriteRecipes_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_FavoriteRecipes_Recipe_RecipeId",
+                        column: x => x.RecipeId,
+                        principalTable: "Recipe",
+                        principalColumn: "RecipeId");
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Ingredient",
                 columns: table => new
                 {
@@ -222,30 +245,6 @@ namespace RecipeWebsite.Migrations
                         principalTable: "Recipe",
                         principalColumn: "RecipeId",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "RecipeUser",
-                columns: table => new
-                {
-                    MyFavoritesRecipeId = table.Column<int>(type: "int", nullable: false),
-                    UsersFavoritedId = table.Column<string>(type: "nvarchar(450)", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_RecipeUser", x => new { x.MyFavoritesRecipeId, x.UsersFavoritedId });
-                    table.ForeignKey(
-                        name: "FK_RecipeUser_AspNetUsers_UsersFavoritedId",
-                        column: x => x.UsersFavoritedId,
-                        principalTable: "AspNetUsers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_RecipeUser_Recipe_MyFavoritesRecipeId",
-                        column: x => x.MyFavoritesRecipeId,
-                        principalTable: "Recipe",
-                        principalColumn: "RecipeId",
-                        onDelete: ReferentialAction.NoAction);
                 });
 
             migrationBuilder.CreateIndex(
@@ -298,6 +297,11 @@ namespace RecipeWebsite.Migrations
                 column: "ParentRecipeRecipeId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_FavoriteRecipes_RecipeId",
+                table: "FavoriteRecipes",
+                column: "RecipeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Ingredient_RecipeId",
                 table: "Ingredient",
                 column: "RecipeId");
@@ -306,11 +310,6 @@ namespace RecipeWebsite.Migrations
                 name: "IX_Recipe_AuthorId",
                 table: "Recipe",
                 column: "AuthorId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_RecipeUser_UsersFavoritedId",
-                table: "RecipeUser",
-                column: "UsersFavoritedId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -334,10 +333,10 @@ namespace RecipeWebsite.Migrations
                 name: "Comments");
 
             migrationBuilder.DropTable(
-                name: "Ingredient");
+                name: "FavoriteRecipes");
 
             migrationBuilder.DropTable(
-                name: "RecipeUser");
+                name: "Ingredient");
 
             migrationBuilder.DropTable(
                 name: "AspNetRoles");
