@@ -1,4 +1,12 @@
-﻿@{
+﻿
+@using Microsoft.AspNetCore.Identity;
+@using Microsoft.EntityFrameworkCore;
+@using RecipeWebsite.Data;
+@using RecipeWebsite.Models;
+@using System.Security.Claims;
+@inject RecipeWebsiteContext _context;
+
+@{
     if (ViewData.TryGetValue("ParentLayout", out var parentLayout) && parentLayout !=  null)
     {
         Layout = parentLayout.ToString();
@@ -23,6 +31,56 @@
         </div>
     </div>
 </div>
+
+<h2>My Recipes</h2>
+
+@{
+    //gets user data from this page
+    System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+
+    //gets the id of the current user
+    string? currentUserID = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+    //gets a list of current user's recipes
+    List<Recipe>? myRecipes = _context.Recipe?.Where(r => r.Author.Id == currentUserID).ToList();
+}
+
+<p>
+    <a asp-action="Create">Create A New Recipe</a>
+</p>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Thumbnail
+            </th>
+            <th>
+                Title
+            </th>
+            <th>
+                Manage Recipes
+            </th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in myRecipes) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImageUrl)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.RecipeId">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.RecipeId">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.RecipeId">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
 
 @section Scripts {
     @RenderSection("Scripts", required: false)
