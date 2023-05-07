@@ -38,21 +38,28 @@
     //gets user data from this page
     System.Security.Claims.ClaimsPrincipal currentUser = this.User;
 
-    //gets the id of the user
-    string currentUserID = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+    //gets the id of the current user
+    string? currentUserID = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-    //gets a list of user's recipes
+    //gets a list of current user's recipes
     List<Recipe>? myRecipes = _context.Recipe?.Where(r => r.Author.Id == currentUserID).ToList();
 }
+
+<p>
+    <a asp-action="Create">Create A New Recipe</a>
+</p>
 
 <table class="table">
     <thead>
         <tr>
             <th>
+                Thumbnail
+            </th>
+            <th>
                 Title
             </th>
             <th>
-                ImageUrl
+                Manage Recipes
             </th>
         </tr>
     </thead>
