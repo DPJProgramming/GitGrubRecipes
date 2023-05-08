@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -14,9 +15,12 @@ namespace RecipeWebsite.Controllers
     {
         private readonly RecipeWebsiteContext _context;
 
-        public RecipeController(RecipeWebsiteContext context)
+        private readonly UserManager<User> _userManager;
+
+        public RecipeController(RecipeWebsiteContext context, UserManager<User> userManager)
         {
             _context = context;
+            _userManager = userManager;
         }
 
         // GET: Recipe
@@ -48,23 +52,46 @@ namespace RecipeWebsite.Controllers
         // GET: Recipe/Create
         public IActionResult Create()
         {
-            return View();
+            var viewModel = new RecipeViewModel();
+            viewModel.Ingredients = new List<Ingredient>();
+            return View(viewModel);
         }
 
-        // POST: Recipe/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RecipeId,Title,UserId,ImageUrl,Ingredients,Directions")] Recipe recipe)
+        public async Task<IActionResult> Create(RecipeViewModel viewModel)
         {
-            if (ModelState.IsValid)
+            // Check for the necessary properties in the view model
+            // ModelState was giving me a headache
+            if (!string.IsNullOrWhiteSpace(viewModel.Title) && !string.IsNullOrWhiteSpace(viewModel.Directions))
             {
-                _context.Add(recipe);
-                await _context.SaveChangesAsync();
+                var recipe = new Recipe();
+                recipe.Title = viewModel.Title;
+                recipe.ImageUrl = viewModel.ImageUrl;
+                recipe.Directions = viewModel.Directions;
+
+                // Create a new list of Ingredient objects and copy the values from the view model
+                ICollection<Ingredient> ingredients = new List<Ingredient>();
+                foreach (Ingredient ingredient in viewModel.Ingredients)
+                {
+                    ingredients.Add(new Ingredient
+                    {
+                        Name = ingredient.Name,
+                        Amount = ingredient.Amount,
+                        Recipe = recipe // Set the Recipe property for each Ingredient
+                    });
+                }
+                recipe.Ingredients = ingredients;
+
+                // Set the author to the currently logged in user
+                recipe.Author = await _userManager.GetUserAsync(User);
+
+                _context.Recipe.Add(recipe);
+                _context.SaveChanges();
+
                 return RedirectToAction(nameof(Index));
             }
-            return View(recipe);
+
+            return View(viewModel);
         }
 
         // GET: Recipe/Edit/5

@@ -48,4 +48,20 @@ namespace RecipeWebsite.Models
 
         public ICollection<User>? UsersFavorited { get; set; }
     }
+
+    public class RecipeViewModel
+    {
+        public RecipeViewModel()
+        {
+            Ingredients = new List<Ingredient>();
+        }
+
+        public string Title { get; set; }
+
+        public string ImageUrl { get; set; }
+
+        public string Directions { get; set; }
+
+        public List<Ingredient> Ingredients { get; set; }
+    }
 }
