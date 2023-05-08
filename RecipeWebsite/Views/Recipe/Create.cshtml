@@ -1,53 +1,93 @@
-﻿@model RecipeWebsite.Models.Recipe
+﻿@model RecipeWebsite.Models.RecipeViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Create Recipe";
+    int i = 0;
 }
 
-<h1>Create</h1>
+<h1>@ViewData["Title"]</h1>
 
-<h4>Recipe</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Author" class="control-label"></label>
-                <input asp-for="Author" class="form-control" />
-                <span asp-validation-for="Author" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Ingredients" class="control-label"></label>
-                <input asp-for="Ingredients" class="form-control" />
-                <span asp-validation-for="Ingredients" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Directions" class="control-label"></label>
-                <input asp-for="Directions" class="form-control" />
-                <span asp-validation-for="Directions" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+
+<form asp-controller="Recipe" asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="Title"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="form-group">
+        <label asp-for="ImageUrl"></label>
+        <input asp-for="ImageUrl" class="form-control" />
+        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+    </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <div class="form-group">
+        <label asp-for="Directions"></label>
+        <textarea asp-for="Directions" class="form-control"></textarea>
+        <span asp-validation-for="Directions" class="text-danger"></span>
+    </div>
+
+    <h4>Ingredients</h4>
+    <hr />
+    <div id="ingredient-fields">
+        <div id="ingredient-fields">
+            @for (i = 0; i < Model.Ingredients.Count; i++)
+            {
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col-md-10">
+                            <input type="text" data-val="false" name="Ingredients[@i].Name" class="form-control" placeholder="Enter an ingredient" value="@Model.Ingredients[i].Name" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <input type="text" data-val="false" name="Ingredients[@i].Amount" class="form-control" placeholder="Enter amount" value="@Model.Ingredients[i].Amount" />
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-danger remove-ingredient">Remove</button>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+    <div class="form-group">
+        <button type="button" class="btn btn-primary" id="add-ingredient">Add Ingredient</button>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Create</button>
+</form>
+
+@section scripts {
+    <script>
+        var i = @i;
+        $(document).ready(function () {
+            $("#add-ingredient").click(function () {
+                var newField = '<div class="form-group">' +
+                    '<div class="row">' +
+                    '<div class="col-md-10">' +
+                    '<input type="text" name="Ingredients[' + i + '].Name" class="form-control" placeholder="Enter an ingredient" data-val="false" value="" />' +
+                    '</div>' +
+                    '</div>' +
+                    '<div class="row">' +
+                    '<div class="col-md-10">' +
+                    '<input type="text" name="Ingredients[' + i + '].Amount" class="form-control" placeholder="Enter amount" data-val="false" value="" />' +
+                    '</div>' +
+                    '<div class="col-md-2">' +
+                    '<button type="button" class="btn btn-danger remove-ingredient">Remove</button>' +
+                    '</div>' +
+                    '</div>' +
+                    '</div>';
+                    '</br>'
+
+                $("#ingredient-fields").append(newField);
+                i++;
+            });
+
+            $("form").on("click", ".remove-ingredient", function () {
+                $(this).closest(".form-group").remove();
+            });
+        });
+    </script>
 }
