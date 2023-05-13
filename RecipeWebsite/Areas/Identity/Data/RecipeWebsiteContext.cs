@@ -41,6 +41,9 @@ public class RecipeWebsiteContext : IdentityDbContext<User>
                 x.HasKey("UserId", "RecipeId");
                 x.ToTable("FavoriteRecipes");
             });
+
+        builder.Entity<FavoriteRecipe>()
+          .HasKey(f => new { f.UserId, f.RecipeId });
     }
 
     
@@ -48,4 +51,6 @@ public class RecipeWebsiteContext : IdentityDbContext<User>
     public DbSet<RecipeWebsite.Models.Recipe>? Recipe { get; set; }
 
     public DbSet<Comment>? Comments { get; set; }
+
+    public DbSet<FavoriteRecipe> FavoritedRecipes { get; set; }
 }
