@@ -41,14 +41,26 @@ public class RecipeWebsiteContext : IdentityDbContext<User>
                 x.ToTable("FavoriteRecipes");
             });
 
+        //previous code before adding FavoriteRecipe
+       /* builder.Entity<Recipe>()
+        .HasMany(r => r.UsersFavorited)
+        .WithMany(u => u.MyFavorites)
+        .UsingEntity<Dictionary<string, object>>(
+            "FavoriteRecipe",
+            x => x.HasOne<User>().WithMany().HasForeignKey("UserId").OnDelete(DeleteBehavior.Cascade),
+            x => x.HasOne<Recipe>().WithMany().HasForeignKey("RecipeId").OnDelete(DeleteBehavior.NoAction),
+            x => {
+                x.HasKey("UserId", "RecipeId");
+                x.ToTable("FavoriteRecipes");
+            }) ;*/
+
+
+        //attempt at configuring FavoriteRecipe could delete in future
         /*builder.SharedTypeEntity<Dictionary<string, object>>(
             "FavoriteRecipes", fr => {
                 fr.Property<string>("UserId");
                 fr.Property<int>("RecipeId");
-            });
-
-        builder.Entity<FavoriteRecipe>().HasKey(f => new { f.UserId, f.RecipeId });*/
-
+            });*/
     }
 
     public DbSet<RecipeWebsite.Models.Recipe>? Recipe { get; set; }
