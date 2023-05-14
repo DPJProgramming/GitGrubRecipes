@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -182,9 +183,28 @@ namespace RecipeWebsite.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        //Get: FavoriteRecipes
+        public async Task<IActionResult> MyFavorites() {
+
+            //gets logged in user 
+            System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+
+            //gets the id of the current user
+            string? currentUserID = currentUser.FindFirst(ClaimTypes.NameIdentifier).Value;
+
+            //make a list from the table of entries matching currently logged in user
+            List<FavoriteRecipe> myFavorites = await (_context.FavoriteRecipes.Where(f => f.UserId == currentUserID).ToListAsync());
+
+            return _context.FavoriteRecipes != null ?
+                        View(myFavorites) :
+                        Problem("Entity set 'RecipeWebsiteContext.FavoriteRecipes'  is null.");
+        }
+
         private bool RecipeExists(int id)
         {
           return (_context.Recipe?.Any(e => e.RecipeId == id)).GetValueOrDefault();
         }
+
+
     }
 }
