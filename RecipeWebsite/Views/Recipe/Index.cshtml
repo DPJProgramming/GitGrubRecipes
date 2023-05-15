@@ -46,9 +46,7 @@
                 @Html.DisplayFor(modelItem => item.Directions)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.RecipeId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RecipeId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.RecipeId">Delete</a>
+                <a asp-action="Details" asp-route-id="@item.RecipeId">Details</a>
             </td>
         </tr>
 }
