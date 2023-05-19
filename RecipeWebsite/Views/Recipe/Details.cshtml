@@ -5,7 +5,9 @@
 }
 
 <h1>Details</h1>
-<a asp-action="AddToFavorites" asp-route-id="@Model.RecipeId">Add To Favorites</a>
+
+<!--button for sending recipeId to controller to add to favorites-->
+    <button type="button" id="favorite" data-model="@Model?.RecipeId">Add To My Favorites</button>
 
 <div>
     <h4>Recipe</h4>
@@ -44,6 +46,37 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.RecipeId">Edit</a> |
+    <a asp-action="Edit" asp-route-id="@Model?.RecipeId">Edit</a> 
     <a asp-action="Index">Back to List</a>
 </div>
+
+<!-- code for button click add to favorites functionality-->
+@section Scripts{
+    <script>
+        $(document).ready(function (){
+            var button = document.getElementById('favorite');
+            var buttonData = button.dataset.model;
+            console.log(buttonData);
+
+            $('#favorite').click(function (){
+
+               //Send data to the server
+               $.ajax({
+                   url: '/Recipe/AddToFavorites',
+                   type: 'POST',
+                   data: JSON.stringify(buttonData),
+                   contentType: 'application/json',
+
+                   success: function (result) {
+                       console.log(result);
+                       alert(result.message);
+                   },
+                   error: function (xhr) {
+                       alert("no luck");
+                   console.error(xhr.responseText);
+                   }
+               });
+            });
+        });
+    </script>
+}
