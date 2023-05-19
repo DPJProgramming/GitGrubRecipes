@@ -201,13 +201,20 @@ namespace RecipeWebsite.Controllers
         }
 
         //adds the recipe to a users favorite recipes aka add entry into the FavoriteRecipes table
-        public async void AddToFavorites(int id) {
+        [HttpPost]
+        public IActionResult AddToFavorites([FromBody]int id) {
+
+            //make new FavoriteRecipe object with relevent data
             FavoriteRecipe favorite = new();
             favorite.RecipeId = id;
             favorite.UserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
 
-            await _context.FavoriteRecipes.AddAsync(favorite);
+            //add object to database
+            _context.FavoriteRecipes.AddAsync(favorite);
             _context.SaveChanges();
+
+            //return message
+            return Json(new { message = "Success" });
         }
 
         private bool RecipeExists(int id)
