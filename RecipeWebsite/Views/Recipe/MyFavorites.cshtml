@@ -1,4 +1,4 @@
-﻿@model IEnumerable<RecipeWebsite.Models.FavoriteRecipe>
+﻿@model IEnumerable<RecipeWebsite.Models.Recipe>
 
 @{
     ViewData["Title"] = "MyFavorites";
@@ -6,12 +6,10 @@
 
 <h1>MyFavorites</h1>
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
+            <th></th>
             <th></th>
         </tr>
     </thead>
@@ -19,14 +17,10 @@
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.UserId)
+                <a asp-action="Details" asp-route-id="@item.RecipeId">@Html.DisplayFor(modelItem => item.ImageUrl)</a>
             </td>
             <td>
-                    @Html.DisplayFor(modelItem => item.RecipeId)
-            </td>
-            <td>
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                <a asp-action="Details" asp-route-id="@item.RecipeId">@Html.DisplayFor(modelItem => item.Title)</a>
             </td>
         </tr>
 }
