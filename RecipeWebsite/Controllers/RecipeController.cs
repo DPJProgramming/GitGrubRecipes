@@ -190,13 +190,23 @@ namespace RecipeWebsite.Controllers
             System.Security.Claims.ClaimsPrincipal currentUser = this.User;
 
             //gets the id of the current user
-            string? currentUserID = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            string? currentUserID = this.User?.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
-            //make a list from the table of entries matching currently logged in user
-            List<FavoriteRecipe> myFavorites = await (_context.FavoriteRecipes.Where(f => f.UserId == currentUserID).ToListAsync());
+            //make a list FavoriteRecipe wher id matches currently logged in user
+            List<FavoriteRecipe> favoriteRecipeModelList = await (_context.FavoriteRecipes.Where(f => f.UserId == currentUserID).ToListAsync());
+
+            //create a list to hold recipes
+            List<Recipe> recipeModelList = new List<Recipe>();
+
+            //add favoriteRecipe list items to recipe list where the recipeid matches
+            foreach(FavoriteRecipe r in favoriteRecipeModelList) {
+                Recipe? recipeToAdd = _context.Recipe?.Where(v => v.RecipeId == r.RecipeId).FirstOrDefault();
+                recipeModelList.Add(recipeToAdd);
+            }
+
 
             return _context.FavoriteRecipes != null ?
-                        View(myFavorites) :
+                        View(recipeModelList) :
                         Problem("Entity set 'RecipeWebsiteContext.FavoriteRecipes'  is null.");
         }
 
