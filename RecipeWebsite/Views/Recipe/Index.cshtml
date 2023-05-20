@@ -4,49 +4,26 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1 class="text-center">Welcome To GitGrub</h1>
+<h4 class="text-center">Sign in to Create Your Own Recipes and Add to Your Favorites List!</h4>
 
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
+            <th >
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Author)
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Ingredients)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Directions)
-            </th>
-            <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Title)
+                <a asp-action="Details" asp-route-id="@item.RecipeId">@Html.DisplayFor(modelItem => item.ImageUrl)</a>               
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Author)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Ingredients)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Directions)
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.RecipeId">Details</a>
+                <a asp-action="Details" asp-route-id="@item.RecipeId">@Html.DisplayFor(modelItem => item.Title)</a>
             </td>
         </tr>
 }
