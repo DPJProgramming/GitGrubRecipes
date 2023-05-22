@@ -1,4 +1,6 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RecipeWebsite.Models
 {
@@ -20,6 +22,8 @@ namespace RecipeWebsite.Models
         /// used to connect recipe to necessary ingredients
         /// </summary>
         public int RecipeId { get; set; }
+
+        [ValidateNever]
         public Recipe Recipe { get; set; }
     }
 }

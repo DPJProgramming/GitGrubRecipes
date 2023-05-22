@@ -61,33 +61,21 @@ namespace RecipeWebsite.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(RecipeViewModel viewModel)
         {
-            // Check for the necessary properties in the view model
-            // ModelState was giving me a headache
-            if (!string.IsNullOrWhiteSpace(viewModel.Title) && !string.IsNullOrWhiteSpace(viewModel.Directions))
+            if (ModelState.IsValid)
             {
                 var recipe = new Recipe();
                 recipe.Title = viewModel.Title;
                 recipe.ImageUrl = viewModel.ImageUrl;
                 recipe.Directions = viewModel.Directions;
 
-                // Create a new list of Ingredient objects and copy the values from the view model
-                ICollection<Ingredient> ingredients = new List<Ingredient>();
-                foreach (Ingredient ingredient in viewModel.Ingredients)
-                {
-                    ingredients.Add(new Ingredient
-                    {
-                        Name = ingredient.Name,
-                        Amount = ingredient.Amount,
-                        Recipe = recipe // Set the Recipe property for each Ingredient
-                    });
-                }
-                recipe.Ingredients = ingredients;
+                // Assign Ingredients list from viewModel to Recipe
+                recipe.Ingredients = viewModel.Ingredients.Select(i => { i.Recipe = recipe; return i; }).ToList();
 
                 // Set the author to the currently logged in user
                 recipe.Author = await _userManager.GetUserAsync(User);
 
                 _context.Recipe.Add(recipe);
-                _context.SaveChanges();
+                await _context.SaveChangesAsync();
 
                 return RedirectToAction(nameof(Index));
             }
@@ -98,17 +86,27 @@ namespace RecipeWebsite.Controllers
         // GET: Recipe/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null || _context.Recipe == null)
+            if (id == null)
             {
                 return NotFound();
             }
 
-            var recipe = await _context.Recipe.FindAsync(id);
+            // Use Include() to load the related Ingredients
+            var recipe = await _context.Recipe.Include(r => r.Ingredients).FirstOrDefaultAsync(r => r.RecipeId == id.Value);
+
             if (recipe == null)
             {
                 return NotFound();
             }
-            return View(recipe);
+
+            var viewModel = new RecipeViewModel();
+            viewModel.RecipeId = recipe.RecipeId;
+            viewModel.Title = recipe.Title;
+            viewModel.ImageUrl = recipe.ImageUrl;
+            viewModel.Directions = recipe.Directions;
+            viewModel.Ingredients = recipe.Ingredients?.ToList() ?? new List<Ingredient>(); // Null-check and initialization if null
+
+            return View(viewModel);
         }
 
         // POST: Recipe/Edit/5
@@ -116,23 +114,73 @@ namespace RecipeWebsite.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RecipeId,Title,UserId,ImageUrl,Ingredients,Directions")] Recipe recipe)
+        public async Task<IActionResult> Edit(int id, RecipeViewModel viewModel)
         {
-            if (id != recipe.RecipeId)
+            if (id != viewModel.RecipeId)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if (ModelState.IsValid) // ModelState wants a Recipe object to be passed through a "Recipe field"
+                                    // which is not possible. I've excluded it from the ModelState validation
             {
                 try
                 {
-                    _context.Update(recipe);
+                    // Load the original recipe, including the ingredients
+                    var originalRecipe = await _context.Recipe.Include(r => r.Ingredients).FirstOrDefaultAsync(r => r.RecipeId == id);
+
+                    if (originalRecipe == null)
+                    {
+                        return NotFound();
+                    }
+
+                    // Update Recipe fields
+                    originalRecipe.Title = viewModel.Title;
+                    originalRecipe.ImageUrl = viewModel.ImageUrl;
+                    originalRecipe.Directions = viewModel.Directions;
+
+                    // Remove Ingredients
+                    foreach (var ingredient in originalRecipe.Ingredients.ToList())
+                    {
+                        if (!viewModel.Ingredients.Any(i => i.IngredientId == ingredient.IngredientId))
+                        {
+                            _context.Entry(ingredient).State = EntityState.Deleted;
+                        }
+                    }
+
+                    // Add and Update Ingredients
+                    foreach (var ingredientViewModel in viewModel.Ingredients)
+                    {
+                        var originalIngredient = ingredientViewModel.IngredientId == 0 ? null :
+                            originalRecipe.Ingredients.FirstOrDefault(i => i.IngredientId == ingredientViewModel.IngredientId);
+
+                        if (originalIngredient == null)  // It's new
+                        {
+                            originalRecipe.Ingredients.Add(new Ingredient
+                            {
+                                Name = ingredientViewModel.Name,
+                                Amount = ingredientViewModel.Amount,
+                                RecipeId = originalRecipe.RecipeId,
+                                Recipe = originalRecipe
+                            });
+                        }
+                        else  // It exists
+                        {
+                            originalIngredient.Name = ingredientViewModel.Name;
+                            originalIngredient.Amount = ingredientViewModel.Amount;
+                            originalIngredient.RecipeId = originalRecipe.RecipeId;
+                            originalIngredient.Recipe = originalRecipe;
+                        }
+                    }
+
+
                     await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!RecipeExists(recipe.RecipeId))
+                    if (!RecipeExists(viewModel.RecipeId))
                     {
                         return NotFound();
                     }
@@ -141,10 +189,11 @@ namespace RecipeWebsite.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
             }
-            return View(recipe);
+            return View(viewModel);
         }
+
+
 
         // GET: Recipe/Delete/5
         public async Task<IActionResult> Delete(int? id)
@@ -229,9 +278,7 @@ namespace RecipeWebsite.Controllers
 
         private bool RecipeExists(int id)
         {
-          return (_context.Recipe?.Any(e => e.RecipeId == id)).GetValueOrDefault();
+          return _context.Recipe.Any(e => e.RecipeId == id);
         }
-
-
     }
 }
