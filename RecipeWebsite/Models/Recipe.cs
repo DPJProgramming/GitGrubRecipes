@@ -17,29 +17,28 @@ namespace RecipeWebsite.Models
         /// Name of the recipe
         /// </summary>
         [Required]
-        public string? Title { get; set; }
+        public string Title { get; set; }
 
         /// <summary>
         /// User who submitted the recipe
         /// </summary>
-        public User Author { get; set; } = null!;
+        public User? Author { get; set; } = null!;
 
         /// <summary>
         /// URL that points at image
         /// </summary>
-        public string? ImageUrl { get; set; }
+        public string ImageUrl { get; set; }
 
         /// <summary>
         /// A list of ingredients stored as a string
         /// </summary>
-        [Required]
-        public ICollection<Ingredient> Ingredients { get; set; }
+        public List<Ingredient> Ingredients { get; set; } = new List<Ingredient>();
 
         /// <summary>
         /// Steps to prepare recipe stored as a string
         /// </summary>
         [Required]
-        public string? Directions { get; set; }
+        public string Directions { get; set; }
 
         /// <summary>
         /// A list of Comment objects that stores attached comments
@@ -54,8 +53,10 @@ namespace RecipeWebsite.Models
         public RecipeViewModel()
         {
             Ingredients = new List<Ingredient>();
+            RecipeId = 0;
         }
 
+        public int RecipeId { get; set; }
         public string Title { get; set; }
 
         public string ImageUrl { get; set; }
