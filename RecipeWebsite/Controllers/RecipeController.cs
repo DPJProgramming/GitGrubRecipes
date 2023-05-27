@@ -151,25 +151,25 @@ namespace RecipeWebsite.Controllers
                     }
 
                     // Add and Update Ingredients
-                    foreach (var ingredientViewModel in viewModel.Ingredients)
+                    foreach (var viewModelIngredient in viewModel.Ingredients)
                     {
-                        var originalIngredient = ingredientViewModel.IngredientId == 0 ? null :
-                            originalRecipe.Ingredients.FirstOrDefault(i => i.IngredientId == ingredientViewModel.IngredientId);
+                        var originalIngredient = viewModelIngredient.IngredientId == 0 ? null :
+                            originalRecipe.Ingredients.FirstOrDefault(i => i.IngredientId == viewModelIngredient.IngredientId);
 
                         if (originalIngredient == null)  // It's new
                         {
                             originalRecipe.Ingredients.Add(new Ingredient
                             {
-                                Name = ingredientViewModel.Name,
-                                Amount = ingredientViewModel.Amount,
+                                Name = viewModelIngredient.Name,
+                                Amount = viewModelIngredient.Amount,
                                 RecipeId = originalRecipe.RecipeId,
                                 Recipe = originalRecipe
                             });
                         }
                         else  // It exists
                         {
-                            originalIngredient.Name = ingredientViewModel.Name;
-                            originalIngredient.Amount = ingredientViewModel.Amount;
+                            originalIngredient.Name = viewModelIngredient.Name;
+                            originalIngredient.Amount = viewModelIngredient.Amount;
                             originalIngredient.RecipeId = originalRecipe.RecipeId;
                             originalIngredient.Recipe = originalRecipe;
                         }

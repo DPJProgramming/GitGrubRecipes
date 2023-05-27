@@ -90,6 +90,7 @@
         $(document).ready(function () {
             $("#add-ingredient").click(function () {
                 var newField = '<div class="form-group">' +
+                    '<input type="hidden" name=""Ingredients[' + i + '].RecipeId" value="@Model.RecipeId" />' +
                     '<input type="hidden" name="Ingredients[' + i + '].IngredientId" value="0" />' +
                     '<div class="row">' +
                     '<div class="col-md-10">' +
@@ -113,7 +114,25 @@
 
             $("form").on("click", ".remove-ingredient", function () {
                 $(this).closest(".form-group").remove();
+                reindexIngredients();
             });
         });
+
+        function reindexIngredients() {
+            var ingredients = $("#ingredient-fields .form-group"); // Get all ingredient form groups
+            for (var i = 0; i < ingredients.length; i++) {
+                var inputs = $(ingredients[i]).find("input");
+
+                inputs.each(function () {
+                    var input = $(this);
+                    var name = input.attr("name");
+
+                    // replace the index in the name attribute
+                    name = name.replace(/\[\d+\]/, "[" + i + "]");
+                    input.attr("name", name);
+                });
+            }
+            i = $("#ingredient-fields .form-group").length;
+        }
     </script>
 }
