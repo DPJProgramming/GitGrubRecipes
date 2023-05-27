@@ -41,6 +41,8 @@ namespace RecipeWebsite.Controllers
             }
 
             var recipe = await _context.Recipe
+                .Include(r => r.Ingredients)
+                .Include(r => r.Author)
                 .FirstOrDefaultAsync(m => m.RecipeId == id);
             if (recipe == null)
             {

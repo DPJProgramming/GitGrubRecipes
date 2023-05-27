@@ -14,36 +14,68 @@
     <hr />
     <img src="@Model.ImageUrl" alt="Recipe-Picture"/>
     <dl class="row">
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Title)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Title)
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Author)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Author)
+        <dd class="col-sm-10">
+                    @Model.Author.UserName
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Ingredients)
         </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Ingredients)
+        <dd class="col-sm-10">
+            @if (Model.Ingredients != null && Model.Ingredients.Any())
+            {
+                <div class="ingredients-container">
+                    @foreach (var ingredient in Model.Ingredients)
+                    {
+                        <div class="ingredient-row">
+                            <span>@ingredient.Name</span>
+                            <span>@ingredient.Amount</span>
+                        </div>
+                    }
+                </div>
+            }
+            else
+            {
+                <p>No ingredients found.</p>
+            }
         </dd>
-        <dt class = "col-sm-2">
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Directions)
         </dt>
-        <dd class = "col-sm-10">
+        <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Directions)
         </dd>
     </dl>
+
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model?.RecipeId">Edit</a> 
     <a asp-action="Index">Back to List</a>
 </div>
+
+
+<style>
+    .ingredients-container {
+        display: flex;
+        flex-direction: column;
+        width: 50%;
+    }
+
+    .ingredient-row {
+        display: flex;
+        justify-content: space-between;
+        border-bottom: 1px solid gray;
+        padding: 5px 0;
+    }
+</style>
 
 <!-- code for button click add to favorites functionality-->
 @section Scripts{
