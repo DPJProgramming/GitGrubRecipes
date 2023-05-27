@@ -65,7 +65,7 @@ namespace RecipeWebsite.Controllers
             {
                 var recipe = new Recipe();
                 recipe.Title = viewModel.Title;
-                recipe.ImageUrl = viewModel.ImageUrl;
+                recipe.ImageUrl = !string.IsNullOrEmpty(viewModel.ImageUrl) ? viewModel.ImageUrl : "https://i.imgur.com/zIAshBo.png";
                 recipe.Directions = viewModel.Directions;
 
                 // Assign Ingredients list from viewModel to Recipe
