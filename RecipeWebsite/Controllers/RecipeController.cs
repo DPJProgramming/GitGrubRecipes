@@ -222,12 +222,30 @@ namespace RecipeWebsite.Controllers
             {
                 return Problem("Entity set 'RecipeWebsiteContext.Recipe'  is null.");
             }
-            var recipe = await _context.Recipe.FindAsync(id);
+
+            // Find the recipe
+            var recipe = await _context.Recipe
+                .Include(r => r.UsersFavorited)  // Include the users who have favorited this recipe
+                .FirstOrDefaultAsync(r => r.RecipeId == id);
+
             if (recipe != null)
             {
+                // Remove all FavoriteRecipes entries associated with this recipe
+                foreach (var user in recipe.UsersFavorited)
+                {
+                    var favoriteRecipe = await _context.FavoriteRecipes
+                        .FirstOrDefaultAsync(fr => fr.RecipeId == id && fr.UserId == user.Id);
+
+                    if (favoriteRecipe != null)
+                    {
+                        _context.FavoriteRecipes.Remove(favoriteRecipe);
+                    }
+                }
+
+                // Now remove the recipe itself
                 _context.Recipe.Remove(recipe);
             }
-            
+
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
