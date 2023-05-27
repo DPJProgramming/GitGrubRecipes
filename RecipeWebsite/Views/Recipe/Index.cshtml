@@ -17,15 +17,18 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.RecipeId">@Html.DisplayFor(modelItem => item.ImageUrl)</a>               
-            </td>
-            <td>
-                <a asp-action="Details" asp-route-id="@item.RecipeId">@Html.DisplayFor(modelItem => item.Title)</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.RecipeId">
+                        <img src="@item.ImageUrl" alt="Recipe Image" width="100" />
+                    </a>
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.RecipeId">@Html.DisplayFor(modelItem => item.Title)</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

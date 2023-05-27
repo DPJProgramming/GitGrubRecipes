@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace RecipeWebsite.Models
 {
@@ -57,8 +58,10 @@ namespace RecipeWebsite.Models
         }
 
         public int RecipeId { get; set; }
+
         public string Title { get; set; }
 
+        [ValidateNever]
         public string ImageUrl { get; set; }
 
         public string Directions { get; set; }
