@@ -61,6 +61,24 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+<!--Comment section-->
+<form id="new-comment">
+    <label for="comment-text">Add a comment!</label>
+    <input type="text" id="comment-text" />
+    <button type="button" id="confirm-comment" ></button>
+</form>
+
+ <br />
+@* <div id="comment-section">
+     <dt>
+    @foreach(Comment comment in Model.Comments) {
+        <div id="single-comment">
+            <h4>@comment.CommentAuthor.UserName</h4>
+            <p>@comment.Content</p>
+        </div>
+    }
+    </dt>
+</div>*@
 
 <style>
     .ingredients-container {
