@@ -61,11 +61,24 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+
+
+
+
+
+
+
+
+
+
 <!--Comment section-->
 <form id="new-comment">
     <label for="comment-text">Add a comment!</label>
     <br />
     <input type="text" id="comment-text" />
+
+    <input type="hidden" data-model="@Model" />
+
     <button type="button" id="confirm-comment" >Add Comment</button>
 </form>
 
@@ -122,6 +135,33 @@
                    console.error(xhr.responseText);
                    }
                });
+            });
+        });
+    </script>
+
+    <!--For adding a comment-->
+    <script>
+        $(document).ready(function () {;
+            $('#confirm-comment').click(function () {
+                alert("button was clicked");
+                //let commentText = $('#comment-text').val();
+                var form = $("#single-comment").serialize();
+
+                $.ajax({
+                    url: '/Comment/Create',
+                    type: 'POST',
+                    data: form,
+                    dataType: 'json',
+
+                    success: function (result) {
+                        console.log(result);
+                        alert(result.message);
+                    },
+                    error: function (xhr) {
+                        alert("Adding Comment Failed");
+                        console.error(xhr.responseText);
+                    }
+                });
             });
         });
     </script>
