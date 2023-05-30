@@ -1,4 +1,5 @@
-﻿@model RecipeWebsite.Models.Recipe
+﻿@using Newtonsoft.Json;
+@model RecipeWebsite.Models.Recipe
 
 @{
     ViewData["Title"] = "Details";
@@ -143,15 +144,25 @@
     <script>
         $(document).ready(function () {;
             $('#confirm-comment').click(function () {
+
                 alert("button was clicked");
-                //let commentText = $('#comment-text').val();
-                var form = $("#single-comment").serialize();
+
+                //text from comment textbox
+                var commentText = $('#comment-text').val(); 
+
+                //converts the current recipe into data that can be sent
+                var recipeData = @Html.Raw(JsonConvert.SerializeObject(Model, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
+
+                var sendData ={
+                    commentText: commentText,
+                    recipe: recipeData
+                };
 
                 $.ajax({
-                    url: '/Comment/Create',
+                    url: '@Url.Action("Create", "Comment")',
                     type: 'POST',
-                    data: form,
-                    dataType: 'json',
+                    data: JSON.stringify(sendData),
+                    contentType: 'application/json',
 
                     success: function (result) {
                         console.log(result);
