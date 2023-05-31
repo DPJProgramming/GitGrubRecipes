@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Ganss.Xss;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -48,6 +49,11 @@ namespace RecipeWebsite.Controllers
             {
                 return NotFound();
             }
+
+            // sanitize directions to avoid XSS vulnerability
+            var sanitizer = new HtmlSanitizer();
+            var sanitizedDirections = sanitizer.Sanitize(recipe.Directions.Replace("\r\n", "<br />"));
+            recipe.Directions = sanitizedDirections;
 
             var currentUser = await _userManager.GetUserAsync(User);
             currentUser = _context.Users.Include(u => u.MyFavorites).FirstOrDefault(u => u.Id == currentUser.Id);

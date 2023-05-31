@@ -36,6 +36,11 @@
                 <input asp-for="ImageUrl" class="form-control" />
                 <span asp-validation-for="ImageUrl" class="text-danger"></span>
             </div>
+            <div class="form-group">
+                <label asp-for="Directions"></label>
+                <textarea asp-for="Directions" class="form-control"></textarea>
+                <span asp-validation-for="Directions" class="text-danger"></span>
+            </div>
             <br />
             <h4>Ingredients</h4>
             <hr />
@@ -66,11 +71,6 @@
             </div>
             <div class="form-group">
                 <button type="button" class="btn btn-primary" id="add-ingredient">Add Ingredient</button>
-            </div>
-            <div class="form-group">
-                <label asp-for="Directions" class="control-label"></label>
-                <input asp-for="Directions" class="form-control" />
-                <span asp-validation-for="Directions" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
