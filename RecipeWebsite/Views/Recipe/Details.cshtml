@@ -7,7 +7,11 @@
 <h1>Details</h1>
 
 <!--button for sending recipeId to controller to add to favorites-->
-<button type="button" id="favorite" data-model="@Model.Recipe?.RecipeId">Add To My Favorites</button>
+@if (Model.CurrentUser != null)
+{
+    <button type="button" id="favorite" data-model="@Model.Recipe?.RecipeId">Add To My Favorites</button>
+}
+
 
 <div>
     <h4>Recipe</h4>
@@ -56,7 +60,7 @@
     </dl>
 </div>
 <div>
-    @if (Model.Recipe.Author.Id == Model.CurrentUser.Id)
+    @if (Model.CurrentUser != null && Model.Recipe.Author.Id == Model.CurrentUser.Id)
     {
         <a asp-action="Edit" asp-route-id="@Model.Recipe?.RecipeId">Edit</a>
     }
