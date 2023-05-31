@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using System.ComponentModel.DataAnnotations;
 
 namespace RecipeWebsite.Models
@@ -67,5 +68,11 @@ namespace RecipeWebsite.Models
         public string Directions { get; set; }
 
         public List<Ingredient> Ingredients { get; set; }
+    }
+
+    public class RecipeDetailsViewModel
+    {
+        public Recipe Recipe { get; set; }
+        public User? CurrentUser { get; set; } = null;
     }
 }
