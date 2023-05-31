@@ -9,7 +9,9 @@
 <!--button for sending recipeId to controller to add to favorites-->
 @if (Model.CurrentUser != null)
 {
-    <button type="button" id="favorite" data-model="@Model.Recipe?.RecipeId">Add To My Favorites</button>
+    <button type="button" id="favorite" data-model="@Model.Recipe?.RecipeId">
+        @(Model.CurrentUser.MyFavorites != null && Model.CurrentUser.MyFavorites.Any(r => r.RecipeId == Model.Recipe.RecipeId) ? "Remove from Favorites" : "Add to Favorites")
+    </button>
 }
 
 
@@ -86,29 +88,28 @@
 <!-- code for button click add to favorites functionality-->
 @section Scripts{
     <script>
-        $(document).ready(function () {
-            var button = document.getElementById('favorite');
-            var buttonData = button.dataset.model;
-            console.log(buttonData);
+        $(function () {
+            var recipeId = $('#favorite').data('model');
 
             $('#favorite').click(function () {
-
                 //Send data to the server
                 $.ajax({
-                    url: '/Recipe/AddToFavorites',
+                    url: '/Recipe/ToggleFavorite',
                     type: 'POST',
-                    data: JSON.stringify(buttonData),
-                    contentType: 'application/json',
-
-                    success: function (result) {
-                        console.log(result);
+                    data: JSON.stringify(recipeId),
+                    contentType: 'application/json'
+                })
+                    .done(function (result) {
                         alert(result.message);
-                    },
-                    error: function (xhr) {
-                        alert("no luck");
-                        console.error(xhr.responseText);
-                    }
-                });
+                        if (result.message === "Added to favorites") {
+                            $('#favorite').text("Remove from Favorites");
+                        } else {
+                            $('#favorite').text("Add to Favorites");
+                        }
+                    })
+                    .fail(function (xhr) {
+                        alert("An error occurred: " + xhr.responseText);
+                    });
             });
         });
     </script>

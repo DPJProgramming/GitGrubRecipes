@@ -50,6 +50,7 @@ namespace RecipeWebsite.Controllers
             }
 
             var currentUser = await _userManager.GetUserAsync(User);
+            currentUser = _context.Users.Include(u => u.MyFavorites).FirstOrDefault(u => u.Id == currentUser.Id);
             var viewModel = new RecipeDetailsViewModel
             {
                 Recipe = recipe,
@@ -289,21 +290,31 @@ namespace RecipeWebsite.Controllers
 
         //adds the recipe to a users favorite recipes aka add entry into the FavoriteRecipes table
         [HttpPost]
-        public IActionResult AddToFavorites([FromBody]int id) {
+        public IActionResult ToggleFavorite([FromBody] int id)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var existingFavorite = _context.FavoriteRecipes.FirstOrDefault(fr => fr.RecipeId == id && fr.UserId == userId);
 
-            //make new FavoriteRecipe object with relevent data
-            FavoriteRecipe favorite = new();
-            favorite.RecipeId = id;
-            favorite.UserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-            //add object to database
-            _context.FavoriteRecipes.AddAsync(favorite);
-            _context.SaveChanges();
-
-            //return message
-            return Json(new { message = "Success" });
+            if (existingFavorite != null)
+            {
+                _context.FavoriteRecipes.Remove(existingFavorite);
+                _context.SaveChanges();
+                return Json(new { message = "Removed from favorites" });
+            }
+            else
+            {
+                var favorite = new FavoriteRecipe
+                {
+                    RecipeId = id,
+                    UserId = userId
+                };
+                _context.FavoriteRecipes.Add(favorite);
+                _context.SaveChanges();
+                return Json(new { message = "Added to favorites" });
+            }
         }
 
+        // Returns true if the recipe exists in the database
         private bool RecipeExists(int id)
         {
           return _context.Recipe.Any(e => e.RecipeId == id);
