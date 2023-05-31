@@ -1,5 +1,5 @@
 ﻿@using Newtonsoft.Json;
-@model RecipeWebsite.Models.Recipe
+﻿@model RecipeDetailsViewModel
 
 @{
     ViewData["Title"] = "Details";
@@ -8,33 +8,45 @@
 <h1>@Model.Title</h1>
 
 <!--button for sending recipeId to controller to add to favorites-->
-    <button type="button" id="favorite" data-model="@Model?.RecipeId">Add To My Favorites</button>
+@if (Model.CurrentUser != null)
+{
+    <button type="button" id="favorite" data-model="@Model.Recipe?.RecipeId">
+        @(Model.CurrentUser.MyFavorites != null && Model.CurrentUser.MyFavorites.Any(r => r.RecipeId == Model.Recipe.RecipeId) ? "Remove from Favorites" : "Add to Favorites")
+    </button>
+}
+
 
 <div>
     <h4>Recipe</h4>
     <hr />
-    <img src="@Model.ImageUrl" alt="Recipe-Picture"/>
+    <img src="@Model.Recipe.ImageUrl" alt="Recipe-Picture" width="300" />
     <dl class="row">
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Title)
+            @Html.DisplayNameFor(model => model.Recipe.Title)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Title)
+            @Html.DisplayFor(model => model.Recipe.Title)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Author)
+            @Html.DisplayNameFor(model => model.Recipe.Author)
         </dt>
         <dd class="col-sm-10">
-                    @Model.Author.UserName
+            @Model.Recipe.Author.UserName
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Ingredients)
+            @Html.DisplayNameFor(model => model.Recipe.Directions)
         </dt>
         <dd class="col-sm-10">
-            @if (Model.Ingredients != null && Model.Ingredients.Any())
+            @Html.Raw(Model.Recipe.Directions)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Recipe.Ingredients)
+        </dt>
+        <dd class="col-sm-10">
+            @if (Model.Recipe.Ingredients != null && Model.Recipe.Ingredients.Any())
             {
                 <div class="ingredients-container">
-                    @foreach (var ingredient in Model.Ingredients)
+                    @foreach (var ingredient in Model.Recipe.Ingredients)
                     {
                         <div class="ingredient-row">
                             <span>@ingredient.Name</span>
@@ -48,17 +60,14 @@
                 <p>No ingredients found.</p>
             }
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Directions)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Directions)
-        </dd>
+        
     </dl>
-
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.RecipeId">Edit</a> 
+    @if (Model.CurrentUser != null && Model.Recipe.Author.Id == Model.CurrentUser.Id)
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Recipe?.RecipeId">Edit</a>
+    }
     <a asp-action="Index">Back to List</a>
 </div>
 
@@ -178,6 +187,32 @@
                         console.error(xhr.responseText);
                     }
                 });
+            });
+        });
+    </script>
+}
+        $(function () {
+            var recipeId = $('#favorite').data('model');
+
+            $('#favorite').click(function () {
+                //Send data to the server
+                $.ajax({
+                    url: '/Recipe/ToggleFavorite',
+                    type: 'POST',
+                    data: JSON.stringify(recipeId),
+                    contentType: 'application/json'
+                })
+                    .done(function (result) {
+                        // alert(result.message);
+                        if (result.message === "Added to favorites") {
+                            $('#favorite').text("Remove from Favorites");
+                        } else {
+                            $('#favorite').text("Add to Favorites");
+                        }
+                    })
+                    .fail(function (xhr) {
+                        alert("An error occurred: " + xhr.responseText);
+                    });
             });
         });
     </script>

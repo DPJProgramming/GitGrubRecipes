@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Ganss.Xss;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -35,7 +36,7 @@ namespace RecipeWebsite.Controllers
         // GET: Recipe/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null || _context.Recipe == null)
+            if (id == null)
             {
                 return NotFound();
             }
@@ -49,8 +50,20 @@ namespace RecipeWebsite.Controllers
                 return NotFound();
             }
 
-            return View(recipe);
+            // sanitize directions to avoid XSS vulnerability
+            recipe.Directions = Sanitize(recipe.Directions);
+
+            var currentUser = await _userManager.GetUserAsync(User);
+            currentUser = _context.Users.Include(u => u.MyFavorites).FirstOrDefault(u => u.Id == currentUser.Id);
+            var viewModel = new RecipeDetailsViewModel
+            {
+                Recipe = recipe,
+                CurrentUser = currentUser
+            };
+
+            return View(viewModel);
         }
+
 
         // GET: Recipe/Create
         public IActionResult Create()
@@ -151,25 +164,25 @@ namespace RecipeWebsite.Controllers
                     }
 
                     // Add and Update Ingredients
-                    foreach (var ingredientViewModel in viewModel.Ingredients)
+                    foreach (var viewModelIngredient in viewModel.Ingredients)
                     {
-                        var originalIngredient = ingredientViewModel.IngredientId == 0 ? null :
-                            originalRecipe.Ingredients.FirstOrDefault(i => i.IngredientId == ingredientViewModel.IngredientId);
+                        var originalIngredient = viewModelIngredient.IngredientId == 0 ? null :
+                            originalRecipe.Ingredients.FirstOrDefault(i => i.IngredientId == viewModelIngredient.IngredientId);
 
                         if (originalIngredient == null)  // It's new
                         {
                             originalRecipe.Ingredients.Add(new Ingredient
                             {
-                                Name = ingredientViewModel.Name,
-                                Amount = ingredientViewModel.Amount,
+                                Name = viewModelIngredient.Name,
+                                Amount = viewModelIngredient.Amount,
                                 RecipeId = originalRecipe.RecipeId,
                                 Recipe = originalRecipe
                             });
                         }
                         else  // It exists
                         {
-                            originalIngredient.Name = ingredientViewModel.Name;
-                            originalIngredient.Amount = ingredientViewModel.Amount;
+                            originalIngredient.Name = viewModelIngredient.Name;
+                            originalIngredient.Amount = viewModelIngredient.Amount;
                             originalIngredient.RecipeId = originalRecipe.RecipeId;
                             originalIngredient.Recipe = originalRecipe;
                         }
@@ -281,24 +294,42 @@ namespace RecipeWebsite.Controllers
 
         //adds the recipe to a users favorite recipes aka add entry into the FavoriteRecipes table
         [HttpPost]
-        public IActionResult AddToFavorites([FromBody]int id) {
+        public IActionResult ToggleFavorite([FromBody] int id)
+        {
+            var userId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
+            var existingFavorite = _context.FavoriteRecipes.FirstOrDefault(fr => fr.RecipeId == id && fr.UserId == userId);
 
-            //make new FavoriteRecipe object with relevent data
-            FavoriteRecipe favorite = new();
-            favorite.RecipeId = id;
-            favorite.UserId = this.User.FindFirst(ClaimTypes.NameIdentifier).Value;
-
-            //add object to database
-            _context.FavoriteRecipes.AddAsync(favorite);
-            _context.SaveChanges();
-
-            //return message
-            return Json(new { message = "Success" });
+            if (existingFavorite != null)
+            {
+                _context.FavoriteRecipes.Remove(existingFavorite);
+                _context.SaveChanges();
+                return Json(new { message = "Removed from favorites" });
+            }
+            else
+            {
+                var favorite = new FavoriteRecipe
+                {
+                    RecipeId = id,
+                    UserId = userId
+                };
+                _context.FavoriteRecipes.Add(favorite);
+                _context.SaveChanges();
+                return Json(new { message = "Added to favorites" });
+            }
         }
 
+        // Returns true if the recipe exists in the database
         private bool RecipeExists(int id)
         {
           return _context.Recipe.Any(e => e.RecipeId == id);
+        }
+
+        // Sanitizes a string to be displayed as Raw HTML to avoid cross-site scripting (XSS) vulnerability
+        private static string Sanitize(string str)
+        {
+            var sanitizer = new HtmlSanitizer();
+            var sanitizedString = sanitizer.Sanitize(str.Replace("\r\n", "<br />"));
+            return sanitizedString;
         }
     }
 }

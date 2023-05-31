@@ -21,63 +21,60 @@
 
 <h4>Recipe</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-controller="Recipe" asp-action="Edit" method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="RecipeId" />
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
-            </div>
-            <br />
-            <h4>Ingredients</h4>
-            <hr />
-            <div id="ingredient-fields">
-                <div id="ingredient-fields">
-                    @for (i = 0; i < Model.Ingredients.Count; i++)
-                    {
-                        <div class="form-group">
-                            <input type="hidden" name="Ingredients[@i].RecipeId" value="@Model.RecipeId" />
-                            <input type="hidden" name="Ingredients[@i].IngredientId" value="@Model.Ingredients[i].IngredientId" />
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <input type="text" data-val="false" name="Ingredients[@i].Name" class="form-control" placeholder="Enter an ingredient" value="@Model.Ingredients[i].Name" />
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-md-10">
-                                    <input type="text" data-val="false" name="Ingredients[@i].Amount" class="form-control" placeholder="Enter amount" value="@Model.Ingredients[i].Amount" />
-                                </div>
-                                <div class="col-md-2">
-                                    <button type="button" class="btn btn-danger remove-ingredient">Remove</button>
-                                </div>
-                            </div>
-                        </div>
-                        <br />
-                    }
-                </div>
-            </div>
-            <div class="form-group">
-                <button type="button" class="btn btn-primary" id="add-ingredient">Add Ingredient</button>
-            </div>
-            <div class="form-group">
-                <label asp-for="Directions" class="control-label"></label>
-                <input asp-for="Directions" class="form-control" />
-                <span asp-validation-for="Directions" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+
+<form asp-controller="Recipe" asp-action="Edit" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="RecipeId" />
+    <div class="form-group">
+        <label asp-for="Title" class="control-label"></label>
+        <input asp-for="Title" class="form-control" />
+        <span asp-validation-for="Title" class="text-danger"></span>
     </div>
-</div>
+    <div class="form-group">
+        <label asp-for="ImageUrl" class="control-label"></label>
+        <input asp-for="ImageUrl" class="form-control" />
+        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Directions"></label>
+        <textarea asp-for="Directions" class="form-control"></textarea>
+        <span asp-validation-for="Directions" class="text-danger"></span>
+    </div>
+    <br />
+    <h4>Ingredients</h4>
+    <hr />
+    <div id="ingredient-fields">
+        <div id="ingredient-fields">
+            @for (i = 0; i < Model.Ingredients.Count; i++)
+            {
+                <div class="form-group">
+                    <input type="hidden" name="Ingredients[@i].RecipeId" value="@Model.RecipeId" />
+                    <input type="hidden" name="Ingredients[@i].IngredientId" value="@Model.Ingredients[i].IngredientId" />
+                    <div class="row">
+                        <div class="col-md-10">
+                            <input type="text" data-val="false" name="Ingredients[@i].Name" class="form-control" placeholder="Enter an ingredient" value="@Model.Ingredients[i].Name" />
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-10">
+                            <input type="text" data-val="false" name="Ingredients[@i].Amount" class="form-control" placeholder="Enter amount" value="@Model.Ingredients[i].Amount" />
+                        </div>
+                        <div class="col-md-2">
+                            <button type="button" class="btn btn-danger remove-ingredient">Remove</button>
+                        </div>
+                    </div>
+                </div>
+                <br />
+            }
+        </div>
+    </div>
+    <div class="form-group">
+        <button type="button" class="btn btn-primary" id="add-ingredient">Add Ingredient</button>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Save" class="btn btn-primary" />
+    </div>
+</form>
 
 <div>
     <a asp-action="Index">Back to List</a>
@@ -90,6 +87,7 @@
         $(document).ready(function () {
             $("#add-ingredient").click(function () {
                 var newField = '<div class="form-group">' +
+                    '<input type="hidden" name=""Ingredients[' + i + '].RecipeId" value="@Model.RecipeId" />' +
                     '<input type="hidden" name="Ingredients[' + i + '].IngredientId" value="0" />' +
                     '<div class="row">' +
                     '<div class="col-md-10">' +
@@ -113,7 +111,25 @@
 
             $("form").on("click", ".remove-ingredient", function () {
                 $(this).closest(".form-group").remove();
+                reindexIngredients();
             });
         });
+
+        function reindexIngredients() {
+            var ingredients = $("#ingredient-fields .form-group"); // Get all ingredient form groups
+            for (var i = 0; i < ingredients.length; i++) {
+                var inputs = $(ingredients[i]).find("input");
+
+                inputs.each(function () {
+                    var input = $(this);
+                    var name = input.attr("name");
+
+                    // replace the index in the name attribute
+                    name = name.replace(/\[\d+\]/, "[" + i + "]");
+                    input.attr("name", name);
+                });
+            }
+            i = $("#ingredient-fields .form-group").length;
+        }
     </script>
 }
