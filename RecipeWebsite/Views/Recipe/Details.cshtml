@@ -5,7 +5,7 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>@Model.Title</h1>
 
 <!--button for sending recipeId to controller to add to favorites-->
     <button type="button" id="favorite" data-model="@Model?.RecipeId">Add To My Favorites</button>
@@ -84,16 +84,22 @@
 </form>
 
  <br />
-@* <div id="comment-section">
-     <dt>
-    @foreach(Comment comment in Model.Comments) {
-        <div id="single-comment">
-            <h4>@comment.CommentAuthor.UserName</h4>
-            <p>@comment.Content</p>
-        </div>
+
+<div>
+    @if (Model.Comments != null && Model.Comments.Any()) {
+        @foreach(Comment comment in Model.Comments) {
+            <div id="single-comment">
+                <div>
+                    <h4>@comment.CommentAuthor.UserName</h4>
+                </div>
+                <div>
+                    <p>@comment.Content</p>
+                </div>
+
+            </div>
+        }
     }
-    </dt>
-</div>*@
+</div>
 
 <style>
     .ingredients-container {
@@ -110,17 +116,16 @@
     }
 </style>
 
-<!-- code for button click add to favorites functionality-->
+<!-- code for add to favorites functionality-->
 @section Scripts{
     <script>
         $(document).ready(function (){
             var button = document.getElementById('favorite');
             var buttonData = button.dataset.model;
-            console.log(buttonData);
 
             $('#favorite').click(function (){
 
-               //Send data to the server
+               //Send data to controller
                $.ajax({
                    url: '/Recipe/AddToFavorites',
                    type: 'POST',
@@ -145,19 +150,19 @@
         $(document).ready(function () {;
             $('#confirm-comment').click(function () {
 
-                alert("button was clicked");
-
                 //text from comment textbox
                 var commentText = $('#comment-text').val(); 
 
                 //converts the current recipe into data that can be sent
                 var recipeData = @Html.Raw(JsonConvert.SerializeObject(Model, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
 
+                //creates an onbject with the needed data
                 var sendData ={
                     commentText: commentText,
                     recipe: recipeData
                 };
 
+                //sends data to controller
                 $.ajax({
                     url: '@Url.Action("Create", "Comment")',
                     type: 'POST',
