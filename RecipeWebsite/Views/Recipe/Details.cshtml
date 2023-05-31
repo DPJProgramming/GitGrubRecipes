@@ -33,6 +33,12 @@
             @Model.Recipe.Author.UserName
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Recipe.Directions)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.Raw(Model.Recipe.Directions)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Recipe.Ingredients)
         </dt>
         <dd class="col-sm-10">
@@ -53,12 +59,7 @@
                 <p>No ingredients found.</p>
             }
         </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Recipe.Directions)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Recipe.Directions)
-        </dd>
+        
     </dl>
 </div>
 <div>
