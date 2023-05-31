@@ -51,9 +51,7 @@ namespace RecipeWebsite.Controllers
             }
 
             // sanitize directions to avoid XSS vulnerability
-            var sanitizer = new HtmlSanitizer();
-            var sanitizedDirections = sanitizer.Sanitize(recipe.Directions.Replace("\r\n", "<br />"));
-            recipe.Directions = sanitizedDirections;
+            recipe.Directions = Sanitize(recipe.Directions);
 
             var currentUser = await _userManager.GetUserAsync(User);
             currentUser = _context.Users.Include(u => u.MyFavorites).FirstOrDefault(u => u.Id == currentUser.Id);
@@ -324,6 +322,14 @@ namespace RecipeWebsite.Controllers
         private bool RecipeExists(int id)
         {
           return _context.Recipe.Any(e => e.RecipeId == id);
+        }
+
+        // Sanitizes a string to be displayed as Raw HTML to avoid cross-site scripting (XSS) vulnerability
+        private static string Sanitize(string str)
+        {
+            var sanitizer = new HtmlSanitizer();
+            var sanitizedString = sanitizer.Sanitize(str.Replace("\r\n", "<br />"));
+            return sanitizedString;
         }
     }
 }
