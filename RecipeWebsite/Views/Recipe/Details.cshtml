@@ -1,10 +1,11 @@
 ﻿@model RecipeDetailsViewModel
+@using Newtonsoft.Json;
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>@Model.Recipe.Title</h1>
 
 <!--button for sending recipeId to controller to add to favorites-->
 @if (Model.CurrentUser != null)
@@ -70,6 +71,15 @@
     <a asp-action="Index">Back to List</a>
 </div>
 
+<!--Comment section-->
+<form id="new-comment">
+    <label for="comment-text">Add a comment!</label>
+    <br />
+    <input type="text" id="comment-text" />
+    <input type="hidden" data-model="@Model.Recipe" />
+    <button type="button" id="confirm-comment">Add Comment</button>
+</form>
+<br />
 
 <style>
     .ingredients-container {
@@ -111,6 +121,41 @@
                     .fail(function (xhr) {
                         alert("An error occurred: " + xhr.responseText);
                     });
+            });
+        });
+    </script>
+
+    <!--For adding a comment-->
+    <script>
+        $(document).ready(function () {
+            ;
+            $('#confirm-comment').click(function () {
+                //text from comment textbox
+                var commentText = $('#comment-text').val();
+
+                //converts the current recipe into data that can be sent
+                var recipeData = @Html.Raw(JsonConvert.SerializeObject(Model.Recipe, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
+                
+                //creates an onbject with the needed data
+                var sendData = {
+                    commentText: commentText,
+                    recipe: recipeData
+                };
+                //sends data to controller
+                $.ajax({
+                    url: '@Url.Action("Create", "Comment")',
+                    type: 'POST',
+                    data: JSON.stringify(sendData),
+                    contentType: 'application/json',
+                    success: function (result) {
+                        console.log(result);
+                        alert(result.message);
+                    },
+                    error: function (xhr) {
+                        alert("Adding Comment Failed");
+                        console.error(xhr.responseText);
+                    }
+                });
             });
         });
     </script>
