@@ -12,8 +12,8 @@ using RecipeWebsite.Data;
 namespace RecipeWebsite.Migrations
 {
     [DbContext(typeof(RecipeWebsiteContext))]
-    [Migration("20230505223637_initial")]
-    partial class initial
+    [Migration("20230531174706_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,21 +23,6 @@ namespace RecipeWebsite.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
-
-            modelBuilder.Entity("FavoriteRecipes", b =>
-                {
-                    b.Property<string>("UserId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<int>("RecipeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("UserId", "RecipeId");
-
-                    b.HasIndex("RecipeId");
-
-                    b.ToTable("FavoriteRecipes", (string)null);
-                });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -206,6 +191,21 @@ namespace RecipeWebsite.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("RecipeWebsite.Models.FavoriteRecipe", b =>
+                {
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<int>("RecipeId")
+                        .HasColumnType("int");
+
+                    b.HasKey("UserId", "RecipeId");
+
+                    b.HasIndex("RecipeId");
+
+                    b.ToTable("FavoriteRecipes", (string)null);
+                });
+
             modelBuilder.Entity("RecipeWebsite.Models.Ingredient", b =>
                 {
                     b.Property<int>("IngredientId")
@@ -241,7 +241,6 @@ namespace RecipeWebsite.Migrations
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("RecipeId"), 1L, 1);
 
                     b.Property<string>("AuthorId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Directions")
@@ -249,6 +248,7 @@ namespace RecipeWebsite.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("ImageUrl")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
@@ -327,21 +327,6 @@ namespace RecipeWebsite.Migrations
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
-            modelBuilder.Entity("FavoriteRecipes", b =>
-                {
-                    b.HasOne("RecipeWebsite.Models.Recipe", null)
-                        .WithMany()
-                        .HasForeignKey("RecipeId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("RecipeWebsite.Models.User", null)
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -410,6 +395,21 @@ namespace RecipeWebsite.Migrations
                     b.Navigation("ParentRecipe");
                 });
 
+            modelBuilder.Entity("RecipeWebsite.Models.FavoriteRecipe", b =>
+                {
+                    b.HasOne("RecipeWebsite.Models.Recipe", null)
+                        .WithMany()
+                        .HasForeignKey("RecipeId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.HasOne("RecipeWebsite.Models.User", null)
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("RecipeWebsite.Models.Ingredient", b =>
                 {
                     b.HasOne("RecipeWebsite.Models.Recipe", "Recipe")
@@ -425,9 +425,7 @@ namespace RecipeWebsite.Migrations
                 {
                     b.HasOne("RecipeWebsite.Models.User", "Author")
                         .WithMany("MyRecipes")
-                        .HasForeignKey("AuthorId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("AuthorId");
 
                     b.Navigation("Author");
                 });
