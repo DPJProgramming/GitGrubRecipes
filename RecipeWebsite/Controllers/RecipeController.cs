@@ -54,7 +54,11 @@ namespace RecipeWebsite.Controllers
             recipe.Directions = Sanitize(recipe.Directions);
 
             var currentUser = await _userManager.GetUserAsync(User);
-            currentUser = _context.Users.Include(u => u.MyFavorites).FirstOrDefault(u => u.Id == currentUser.Id);
+            if (currentUser != null)
+            {
+                currentUser = _context.Users.Include(u => u.MyFavorites).FirstOrDefault(u => u.Id == currentUser.Id);
+            }
+
             var viewModel = new RecipeDetailsViewModel
             {
                 Recipe = recipe,
