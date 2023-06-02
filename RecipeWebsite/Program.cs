@@ -4,7 +4,7 @@ using RecipeWebsite.Data;
 using RecipeWebsite.Models;
 
 var builder = WebApplication.CreateBuilder(args);
-var connectionString = builder.Configuration.GetConnectionString("RecipeWebsiteContextConnection") ?? throw new InvalidOperationException("Connection string 'RecipeWebsiteContextConnection' not found.");
+var connectionString = builder.Configuration.GetConnectionString("GitGrubRecipesConnection") ?? throw new InvalidOperationException("Connection string 'GitGrubRecipesConnection' not found.");
 
 builder.Services.AddDbContext<RecipeWebsiteContext>(options =>
     options.UseSqlServer(connectionString));
@@ -37,7 +37,13 @@ builder.Services.Configure<IdentityOptions>(options => {
     options.User.RequireUniqueEmail = false;
 });
 
+//code from lecture week 8 day 2 ast video to automatically aplly migrations
+//error aspnetusers already exsists
 var app = builder.Build();
+
+using IServiceScope scope = app.Services.CreateScope();
+var db = scope.ServiceProvider.GetRequiredService<RecipeWebsiteContext>();
+db.Database.Migrate();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment()) {

@@ -1,0 +1,11 @@
+{
+  "dependencies": {
+    "mssql3": {
+      "serviceConnectorResourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Web/sites/GitGrubRecipes/providers/Microsoft.ServiceLinker/linkers/GitGrubRecipesConnection_DA0BD2195A",
+      "secretStore": "AzureAppSettings",
+      "resourceId": "/subscriptions/[parameters('subscriptionId')]/resourcegroups/[parameters('resourceGroupName')]/providers/Microsoft.Sql/servers/gitgrubrecipesserver/databases/RecipeWebsite",
+      "type": "mssql.azure",
+      "connectionId": "GitGrubRecipesConnection"
+    }
+  }
+}
