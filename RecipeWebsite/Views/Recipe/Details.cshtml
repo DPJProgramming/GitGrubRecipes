@@ -81,6 +81,20 @@
 </form>
 <br />
 
+@if (Model.Recipe.Comments != null && Model.Recipe.Comments.Any()) {
+    <div>
+        @foreach (Comment comment in Model.Recipe.Comments){
+            <div>
+                <h5>@comment.CommentAuthor.UserName</h5>
+            </div>
+            <br />
+
+            <p>@comment.Content</p>
+        }
+    </div>
+    <br />
+}
+
 <style>
     .ingredients-container {
         display: flex;
