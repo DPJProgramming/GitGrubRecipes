@@ -30,24 +30,30 @@ namespace RecipeWebsite.Controllers {
 
             //get current user and set a user object to that user specifically from the database
             User currentUser = await _userManager.GetUserAsync(User);
-            User commentAuthor = await _context.Users.FindAsync(currentUser.Id);
 
-            //set the comment text and passed in recipe
-            string? commentText = data.GetProperty("commentText").GetString();
-            Recipe? passedInRecipe = JsonSerializer.Deserialize<Recipe>(data.GetProperty("recipe").GetRawText());
-            Recipe? parentRecipe = await _context.Recipe.FirstOrDefaultAsync(r => r.RecipeId == passedInRecipe.RecipeId);
+            if (currentUser != null) {
+                User commentAuthor = await _context.Users.FindAsync(currentUser.Id);
 
-            Comment newComment = new Comment {
-                ParentRecipe = parentRecipe,
-                CommentAuthor = commentAuthor,
-                Content = commentText,
-                Votes = 0
-            };
+                //set the comment text and passed in recipe
+                string? commentText = data.GetProperty("commentText").GetString();
+                Recipe? passedInRecipe = JsonSerializer.Deserialize<Recipe>(data.GetProperty("recipe").GetRawText());
+                Recipe? parentRecipe = await _context.Recipe.FirstOrDefaultAsync(r => r.RecipeId == passedInRecipe.RecipeId);
 
-            _context.Comments.Add(newComment);
-            _context.SaveChanges();
+                Comment newComment = new Comment {
+                    ParentRecipe = parentRecipe,
+                    CommentAuthor = commentAuthor,
+                    Content = commentText,
+                    Votes = 0
+                };
 
-            return Json(new { message = "Thanks for commenting!" });
+                _context.Comments.Add(newComment);
+                _context.SaveChanges();
+
+                return Json(new { message = "Thanks for commenting!" });
+            }
+            else {
+                return Json(new { message = "Please register or sign in to your account to comment" });
+            }
         }
 
         // GET: CommentController/Edit/5
