@@ -196,18 +196,11 @@
                     author: authorId
                 };
 
-                //antiforgery token to use with delete method
-                var headers = {};
-                headers['RequestVerificationToken'] = $('input[name="__RequestVerificationToken"]').val();
-
-
-                //sends data to controller
                 $.ajax({
                     url: '@Url.Action("Delete", "Comment")',
                     type: 'POST',
                     data: JSON.stringify(sendData),
                     contentType: 'application/json',
-                    headers:headers,
                     success: function (result) {
                         console.log(result);
                         alert(result.message);
