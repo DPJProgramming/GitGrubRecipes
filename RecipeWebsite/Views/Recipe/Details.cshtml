@@ -85,11 +85,17 @@
     <div>
         @foreach (Comment comment in Model.Recipe.Comments){
             <div>
-                <h5>@comment.CommentAuthor.UserName</h5>
-            </div>
-            <br />
+                <div id="author-container">
+                    <h5 id="comment-author" data-model="@comment.CommentAuthor.Id">@comment.CommentAuthor.UserName</h5>
+                </div>
+                <br />
 
-            <p>@comment.Content</p>
+                <div id="content-container">
+                    <p id="comment-content">@comment.Content</p>
+                </div>
+
+                <button type="button" id="delete-comment" data-model="@comment.CommentId">Delete Comment</button>
+            </div>
         }
     </div>
     <br />
@@ -110,8 +116,10 @@
     }
 </style>
 
-<!-- code for button click add to favorites functionality-->
+<!-- code for button click add to favorites and comments-->
 @section Scripts{
+
+    <!--For adding to favorites-->
     <script>
         $(function () {
             var recipeId = $('#favorite').data('model');
@@ -167,6 +175,45 @@
                     },
                     error: function (xhr) {
                         alert("Adding Comment Failed");
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+
+    <!--For deleting a comment-->
+    <script>
+        $(document).ready(function () {
+            ;
+            $('#delete-comment').click(function () {
+
+                var commentId = $('#delete-comment').data('model');
+                var authorId = $('#comment-author').data('model');
+
+                var sendData = {
+                    comment: commentId,
+                    author: authorId
+                };
+
+                //antiforgery token to use with delete method
+                var headers = {};
+                headers['RequestVerificationToken'] = $('input[name="__RequestVerificationToken"]').val();
+
+
+                //sends data to controller
+                $.ajax({
+                    url: '@Url.Action("Delete", "Comment")',
+                    type: 'POST',
+                    data: JSON.stringify(sendData),
+                    contentType: 'application/json',
+                    headers:headers,
+                    success: function (result) {
+                        console.log(result);
+                        alert(result.message);
+                    },
+                    error: function (xhr) {
+                        alert("Deleting Comment Failed");
                         console.error(xhr.responseText);
                     }
                 });

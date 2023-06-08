@@ -75,13 +75,8 @@ namespace RecipeWebsite.Controllers {
         // POST: CommentController/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection) {
-            try {
-                return RedirectToAction(nameof(Index));
-            }
-            catch {
-                return View();
-            }
+        public ActionResult Delete([FromBody] JsonElement data) {
+            return Json(new { message = "Comment Deleted please refresh page" });
         }
     }
 }
