@@ -94,7 +94,7 @@
                     <p id="comment-content">@comment.Content</p>
                 </div>
 
-                <button type="button" id="delete-comment" data-model="@comment.CommentId">Delete Comment</button>
+                <button type="button" class="delete-comment" data-model="@comment.CommentId">Delete Comment</button>
             </div>
         }
     </div>
@@ -186,10 +186,12 @@
     <script>
         $(document).ready(function () {
             ;
-            $('#delete-comment').click(function () {
+            $('.delete-comment').click(function () {
 
-                var commentId = $('#delete-comment').data('model');
-                var authorId = $('#comment-author').data('model');
+                var commentId = $(this).data('model') //$('#delete-comment').data('model');
+                var authorId = $(this).closest('div').find('#comment-author').data('model');
+
+                alert("commentId is: " + commentId + " authorId is: " + authorId);
 
                 var sendData = {
                     comment: commentId,

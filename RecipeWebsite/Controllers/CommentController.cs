@@ -91,7 +91,7 @@ namespace RecipeWebsite.Controllers {
                 _context.Comments.Remove(commentToRemove);
                 _context.SaveChanges();
 
-                return Json(new { message = "Comment Deleted please refresh page" });
+                return Json(new { message = "Comment Deleted" });
             }
             else {
                 return Json(new { message = "Cannot delete other users comments" });
