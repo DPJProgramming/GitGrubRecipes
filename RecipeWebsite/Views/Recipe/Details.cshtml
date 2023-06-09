@@ -172,6 +172,7 @@
                     success: function (result) {
                         console.log(result);
                         alert(result.message);
+                        location.reload(true);
                     },
                     error: function (xhr) {
                         alert("Adding Comment Failed");
@@ -191,8 +192,6 @@
                 var commentId = $(this).data('model') //$('#delete-comment').data('model');
                 var authorId = $(this).closest('div').find('#comment-author').data('model');
 
-                alert("commentId is: " + commentId + " authorId is: " + authorId);
-
                 var sendData = {
                     comment: commentId,
                     author: authorId
@@ -206,6 +205,7 @@
                     success: function (result) {
                         console.log(result);
                         alert(result.message);
+                        location.reload(true);
                     },
                     error: function (xhr) {
                         alert("Deleting Comment Failed");
