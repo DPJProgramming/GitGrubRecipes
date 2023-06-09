@@ -73,29 +73,31 @@
 
 <!--Comment section-->
 <form id="new-comment">
-    <label for="comment-text">Add a comment!</label>
-    <br />
-    <input type="text" id="comment-text" />
-    <input type="hidden" data-model="@Model.Recipe" />
-    <button type="button" id="confirm-comment">Add Comment</button>
+    <div>
+        <label for="comment-text">Add a comment!</label>
+        <br />
+        <input type="text" id="comment-text" class="w-50 p-3" />
+        <input type="hidden" data-model="@Model.Recipe" />
+        <button type="button" id="confirm-comment">Add Comment</button>
+    </div>
 </form>
 <br />
 
 @if (Model.Recipe.Comments != null && Model.Recipe.Comments.Any()) {
     <div>
         @foreach (Comment comment in Model.Recipe.Comments){
-            <div>
-                <div id="author-container">
+            <div class="card">
+                <div class="card-header">
                     <h5 id="comment-author" data-model="@comment.CommentAuthor.Id">@comment.CommentAuthor.UserName</h5>
                 </div>
-                <br />
 
-                <div id="content-container">
-                    <p id="comment-content">@comment.Content</p>
+                <div class="card-body">
+                    <p id="comment-content" class="card-text">@comment.Content</p>
+                    <button type="button" class="delete-comment" data-model="@comment.CommentId">Delete Comment</button>
                 </div>
-
-                <button type="button" class="delete-comment" data-model="@comment.CommentId">Delete Comment</button>
+                
             </div>
+            <br />
         }
     </div>
     <br />
@@ -190,7 +192,7 @@
             $('.delete-comment').click(function () {
 
                 var commentId = $(this).data('model') //$('#delete-comment').data('model');
-                var authorId = $(this).closest('div').find('#comment-author').data('model');
+                var authorId = $(this).closest('.card').find('#comment-author').data('model');
 
                 var sendData = {
                     comment: commentId,

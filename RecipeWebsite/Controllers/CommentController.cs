@@ -85,7 +85,7 @@ namespace RecipeWebsite.Controllers {
             User currentUser = await getCurrentUser();
 
             //make sure current user is also the comment author then delete comment from database
-            if (authorId == currentUser.Id) {
+            if (currentUser != null && authorId == currentUser.Id) {
                 int commentId = data.GetProperty("comment").GetInt32();
                 Comment? commentToRemove = await _context.Comments.Where(c => c.CommentId == commentId).FirstOrDefaultAsync();
                 _context.Comments.Remove(commentToRemove);
