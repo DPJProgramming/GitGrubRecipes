@@ -68,15 +68,15 @@
     {
         <a asp-action="Edit" asp-route-id="@Model.Recipe?.RecipeId">Edit</a>
     }
-    <a asp-action="Index">Back to List</a>
 </div>
+<br />
 
 <!--Comment section-->
 <form id="new-comment">
     <div>
-        <label for="comment-text">Add a comment!</label>
+        <h3>Comments</h3>
         <br />
-        <input type="text" id="comment-text" class="w-50 p-3" />
+        <textarea rows="5" cols="80" id="comment-text"></textarea>
         <input type="hidden" data-model="@Model.Recipe" />
         <button type="button" id="confirm-comment">Add Comment</button>
     </div>

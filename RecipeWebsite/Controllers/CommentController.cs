@@ -31,28 +31,35 @@ namespace RecipeWebsite.Controllers {
 
             //get current user and set a user object to that user specifically from the database
             User currentUser = await getCurrentUser();
-            User commentAuthor = await _context.Users.FindAsync(currentUser.Id);
 
-            //set the comment text and passed in recipe
-            string? commentText = data.GetProperty("commentText").GetString();
-            if (string.IsNullOrWhiteSpace(commentText)) {
-                return Json(new { message = "Please enter a comment before submitting!" });
+            if(currentUser != null) { 
+                User commentAuthor = await _context.Users.FindAsync(currentUser.Id);
+
+                //set the comment text and passed in recipe
+                string? commentText = data.GetProperty("commentText").GetString();
+                
+                if (string.IsNullOrWhiteSpace(commentText)) {
+                    return Json(new { message = "Please enter a comment before submitting!" });
+                }
+                else {
+                    Recipe? passedInRecipe = JsonSerializer.Deserialize<Recipe>(data.GetProperty("recipe").GetRawText());
+                    Recipe? parentRecipe = await _context.Recipe.FirstOrDefaultAsync(r => r.RecipeId == passedInRecipe.RecipeId);
+
+                    Comment newComment = new Comment {
+                        ParentRecipe = parentRecipe,
+                        CommentAuthor = commentAuthor,
+                        Content = commentText,
+                        Votes = 0
+                    };
+
+                    _context.Comments.Add(newComment);
+                    _context.SaveChanges();
+
+                    return Json(new { message = "Thanks for commenting!" });
+                }
             }
             else {
-                Recipe? passedInRecipe = JsonSerializer.Deserialize<Recipe>(data.GetProperty("recipe").GetRawText());
-                Recipe? parentRecipe = await _context.Recipe.FirstOrDefaultAsync(r => r.RecipeId == passedInRecipe.RecipeId);
-
-                Comment newComment = new Comment {
-                    ParentRecipe = parentRecipe,
-                    CommentAuthor = commentAuthor,
-                    Content = commentText,
-                    Votes = 0
-                };
-
-                _context.Comments.Add(newComment);
-                _context.SaveChanges();
-
-                return Json(new { message = "Thanks for commenting!" });
+                return Json(new { message = "Please register or log in to comment" });
             }
         }
 
