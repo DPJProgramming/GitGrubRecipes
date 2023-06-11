@@ -6,38 +6,25 @@
 
 <h1 class="text-center">Welcome To GitGrub</h1>
 
-@if (User.Identity.IsAuthenticated)
-{
-    <h4>Welcome, @User.Identity.Name</h4>
-}
-else
+@if (!User.Identity.IsAuthenticated)
 {
     <h4 class="text-center">Sign in to Create Your Own Recipes and Add to Your Favorites List!</h4>
 }
 
-
-<table class="table">
-    <thead>
-        <tr>
-            <th >
-            </th>
-            <th>
-            </th>
-        </tr>
-    </thead>
-    <tbody>
+<div class="container">
+    <div class="row">
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.RecipeId">
-                        <img src="@item.ImageUrl" alt="Recipe Image" width="100" />
-                    </a>
-                </td>
-                <td>
-                    <a asp-action="Details" asp-route-id="@item.RecipeId">@Html.DisplayFor(modelItem => item.Title)</a>
-                </td>
-            </tr>
+            <div class="col-md-4">
+                <a asp-action="Details" asp-route-id="@item.RecipeId" style="text-decoration: none; color: inherit;">
+                    <div class="card mx-auto hover-card" style="width: 20rem;">
+                        <img src="@item.ImageUrl" class="card-img-top" alt="Recipe Image">
+                        <div class="card-body">
+                            <h4 class="card-text">@Html.DisplayFor(modelItem => item.Title)</h4>
+                        </div>
+                    </div>
+                </a>
+            </div>
         }
-    </tbody>
-</table>
+    </div>
+</div>
