@@ -21,6 +21,10 @@ h1 {
     margin-bottom: 50px;
 }
 
+.card {
+    margin-bottom: 50px;
+}
+
 .hover-card {
     transition: transform .2s, box-shadow .2s; /* Animation */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
