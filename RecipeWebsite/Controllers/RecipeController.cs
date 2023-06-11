@@ -4,6 +4,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Ganss.Xss;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -34,6 +35,7 @@ namespace RecipeWebsite.Controllers
         }
 
         // GET: Recipe/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -271,6 +273,7 @@ namespace RecipeWebsite.Controllers
         }
 
         //Get: FavoriteRecipes
+        [Authorize]
         public async Task<IActionResult> MyFavorites() {
 
             //gets logged in user 
