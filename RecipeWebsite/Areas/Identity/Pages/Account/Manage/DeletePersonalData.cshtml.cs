@@ -9,12 +9,16 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using RecipeWebsite.Data;
 using RecipeWebsite.Models;
 
 namespace RecipeWebsite.Areas.Identity.Pages.Account.Manage
 {
+
+    
     public class DeletePersonalDataModel : PageModel
     {
+        private readonly RecipeWebsiteContext _context;
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly ILogger<DeletePersonalDataModel> _logger;
@@ -22,11 +26,13 @@ namespace RecipeWebsite.Areas.Identity.Pages.Account.Manage
         public DeletePersonalDataModel(
             UserManager<User> userManager,
             SignInManager<User> signInManager,
-            ILogger<DeletePersonalDataModel> logger)
+            ILogger<DeletePersonalDataModel> logger,
+            RecipeWebsiteContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
+            _context = context;
         }
 
         /// <summary>
@@ -87,6 +93,20 @@ namespace RecipeWebsite.Areas.Identity.Pages.Account.Manage
                 }
             }
 
+            // Retrieve all recipes related to the user
+            var userRecipes = _context.Recipe.Where(r => r.Author.Id == user.Id);
+
+            // For each recipe, handle as needed. (Delete in this case)
+            foreach (var recipe in userRecipes)
+            {
+                // We're deleting each recipe
+                _context.Recipe.Remove(recipe);
+            }
+
+            // Save changes to the recipes
+            await _context.SaveChangesAsync();
+
+            // Now that the user's recipes are handled, it should be safe to delete the user
             var result = await _userManager.DeleteAsync(user);
             var userId = await _userManager.GetUserIdAsync(user);
             if (!result.Succeeded)

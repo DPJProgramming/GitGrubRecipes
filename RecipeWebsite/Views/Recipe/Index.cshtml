@@ -5,7 +5,16 @@
 }
 
 <h1 class="text-center">Welcome To GitGrub</h1>
-<h4 class="text-center">Sign in to Create Your Own Recipes and Add to Your Favorites List!</h4>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <h4>Welcome, @User.Identity.Name</h4>
+}
+else
+{
+    <h4 class="text-center">Sign in to Create Your Own Recipes and Add to Your Favorites List!</h4>
+}
+
 
 <table class="table">
     <thead>
