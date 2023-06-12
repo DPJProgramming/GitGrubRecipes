@@ -65,7 +65,9 @@ namespace RecipeWebsite.Controllers {
 
         // GET: CommentController/Edit/5
         public ActionResult Edit(int id) {
-            return View();
+            Comment comment = _context.Comments.Where(c => c.CommentId == id).SingleOrDefault();
+
+            return View(comment);
         }
 
         // POST: CommentController/Edit/5
