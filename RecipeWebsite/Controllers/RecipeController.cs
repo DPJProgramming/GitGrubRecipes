@@ -26,6 +26,10 @@ namespace RecipeWebsite.Controllers
             _userManager = userManager;
         }
 
+        /// <summary>
+        /// Gets a list of Recipe objects from the database
+        /// </summary>
+        /// <returns></returns>
         // GET: Recipe
         public async Task<IActionResult> Index()
         {
@@ -34,6 +38,11 @@ namespace RecipeWebsite.Controllers
                           Problem("Entity set 'RecipeWebsiteContext.Recipe'  is null.");
         }
 
+        /// <summary>
+        /// Gets the details from the recipe that was clicked to display on view
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // GET: Recipe/Details/5
         [Authorize]
         public async Task<IActionResult> Details(int? id)
@@ -71,7 +80,10 @@ namespace RecipeWebsite.Controllers
             return View(viewModel);
         }
 
-
+        /// <summary>
+        /// Gets the recipe fields ready for create view
+        /// </summary>
+        /// <returns></returns>
         // GET: Recipe/Create
         public IActionResult Create()
         {
@@ -80,6 +92,11 @@ namespace RecipeWebsite.Controllers
             return View(viewModel);
         }
 
+        /// <summary>
+        /// Creates a new recipe and inserts it into the database
+        /// </summary>
+        /// <param name="viewModel"></param>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Create(RecipeViewModel viewModel)
         {
@@ -105,6 +122,11 @@ namespace RecipeWebsite.Controllers
             return View(viewModel);
         }
 
+        /// <summary>
+        /// Gets recipe fields from recipe ready for editing
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // GET: Recipe/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
@@ -131,6 +153,12 @@ namespace RecipeWebsite.Controllers
             return View(viewModel);
         }
 
+        /// <summary>
+        /// Modifies recipe information for specified recipe in database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="viewModel"></param>
+        /// <returns></returns>
         // POST: Recipe/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
@@ -215,8 +243,11 @@ namespace RecipeWebsite.Controllers
             return View(viewModel);
         }
 
-
-
+        /// <summary>
+        /// Gets the delete view for recipe
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // GET: Recipe/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
@@ -235,6 +266,11 @@ namespace RecipeWebsite.Controllers
             return View(recipe);
         }
 
+        /// <summary>
+        ///Removes recipe from database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // POST: Recipe/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
@@ -272,6 +308,10 @@ namespace RecipeWebsite.Controllers
             return RedirectToAction(nameof(Index));
         }
 
+        /// <summary>
+        /// Gets a list of favorite objects from the database
+        /// </summary>
+        /// <returns></returns>
         //Get: FavoriteRecipes
         [Authorize]
         public async Task<IActionResult> MyFavorites() {
@@ -300,6 +340,11 @@ namespace RecipeWebsite.Controllers
                         Problem("Entity set 'RecipeWebsiteContext.FavoriteRecipes'  is null.");
         }
 
+        /// <summary>
+        /// Adds or removes the favorite recipe for user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         //adds the recipe to a users favorite recipes aka add entry into the FavoriteRecipes table
         [HttpPost]
         public IActionResult ToggleFavorite([FromBody] int id)
@@ -326,6 +371,11 @@ namespace RecipeWebsite.Controllers
             }
         }
 
+        /// <summary>
+        /// Checks if the specified recipe exists in the database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // Returns true if the recipe exists in the database
         private bool RecipeExists(int id)
         {

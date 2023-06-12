@@ -20,11 +20,11 @@ namespace RecipeWebsite.Controllers {
             _context = context;
         }
 
-        // GET: CommentController
-        public ActionResult Index() {
-            return View();
-        }
-
+        /// <summary>
+        /// Creates a new comment object and inserts it into the database
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         // POST: CommentController/Create
         [HttpPost]
         public async Task<IActionResult> Create([FromBody] JsonElement data) {
@@ -63,11 +63,22 @@ namespace RecipeWebsite.Controllers {
             }
         }
 
+        /// <summary>
+        /// for future implementation. Will prepare fields for editing comment
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // GET: CommentController/Edit/5
         public ActionResult Edit(int id) {
             return View();
         }
 
+        /// <summary>
+        /// For future implementation. Modifies specified comment in database
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="collection"></param>
+        /// <returns></returns>
         // POST: CommentController/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -80,11 +91,21 @@ namespace RecipeWebsite.Controllers {
             }
         }
 
+        /// <summary>
+        /// Not used
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         // GET: CommentController/Delete/5
         public ActionResult Delete(int id) {
             return View();
         }
 
+        /// <summary>
+        /// Deletes comment from database
+        /// </summary>
+        /// <param name="data"></param>
+        /// <returns></returns>
         // POST: CommentController/Delete/5
         [HttpPost]
         public async Task<IActionResult> Delete([FromBody] JsonElement data) {
@@ -105,6 +126,10 @@ namespace RecipeWebsite.Controllers {
             }
         }
 
+        /// <summary>
+        /// Gets the currently logged in user
+        /// </summary>
+        /// <returns></returns>
         private async Task<User> getCurrentUser() {
             return await _userManager.GetUserAsync(User);
         }
