@@ -112,7 +112,7 @@
     }
 </style>
 
-<!-- code for button click add to favorites and comments-->
+<!-- code for add to favorites and comments-->
 @section Scripts{
 
     <!--For adding to favorites-->
@@ -166,8 +166,6 @@
                     data: JSON.stringify(sendData),
                     contentType: 'application/json',
                     success: function (result) {
-                        console.log(result);
-                        alert(result.message);
                         location.reload(true);
                     },
                     error: function (xhr) {
