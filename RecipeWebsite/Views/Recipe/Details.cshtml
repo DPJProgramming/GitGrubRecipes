@@ -88,10 +88,23 @@
                 <div class="card-body">
                     <p id="comment-content" class="card-text">@comment.Content</p>
                     <button type="button" class="delete-comment" data-model="@comment.CommentId">Delete Comment</button>
+                    <button class="btn btn-primary" data-toggle="modal" data-target="#editModal" data-url="@Url.Action("Edit", "Comment", new { id = comment.CommentId })">Edit</button>
                 </div>
                 
             </div>
             <br />
+
+            <!--for edit comment modal-->
+            <div class="modal fade" id="editModal" role="dialog">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-body">
+                            <partial name="/Views/Comment/Edit.cshtml" for="@comment">
+                            <!-- @Html.Partial("/Views/Comment/Edit.cshtml", comment) -->
+                        </div>
+                    </div>
+                </div>
+            </div>
         }
     </div>
     <br />
@@ -205,6 +218,23 @@
                         alert("Deleting Comment Failed");
                         console.error(xhr.responseText);
                     }
+                });
+            });
+        });
+    </script>
+
+    <!--for edit comment modal-->
+    <script>
+        $(document).ready(function () {
+            $('#editModal').on('hidden.bs.modal', function () {
+                $(this).find('.modal-body').html('');
+            });
+
+            $('.btn-primary').click(function () {
+                var url = $(this).data('url');
+                $.get(url).done(function (data) {
+                    $('#editModal').find('.modal-body').html(data);
+                    $('#editModal').modal('show');
                 });
             });
         });
