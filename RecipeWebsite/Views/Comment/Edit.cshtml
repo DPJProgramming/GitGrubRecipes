@@ -1,4 +1,5 @@
 ﻿@model RecipeWebsite.Models.Comment
+@using Newtonsoft.Json;
 
 @{
     Layout = null;
@@ -8,34 +9,56 @@
     ViewData["Title"] = "View";
 }
 
-<h4>Comment</h4>
+<h4>Edit Comment</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="View">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="CommentId" />
-            <div class="form-group">
-                <label asp-for="Content" class="control-label"></label>
-                <input asp-for="Content" class="form-control" />
-                <span asp-validation-for="Content" class="text-danger"></span>
-            </div>
-            @*<div class="form-group">
-                <label asp-for="Votes" class="control-label"></label>
-                <input asp-for="Votes" class="form-control" />
-                <span asp-validation-for="Votes" class="text-danger"></span>
-            </div>*@
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+      
+        <textarea asp-for="Content" id="edited-text" class="form-control"></textarea>
+        <br />
+
+        @*<div class="form-group">
+            <label asp-for="Votes" class="control-label"></label>
+            <input asp-for="Votes" class="form-control" />
+            <span asp-validation-for="Votes" class="text-danger"></span>
+        </div>*@
+
+        <button type="button" id="save-edit" class="btn btn-primary">Save</button>
+        <br />
+        <p>Click off to cancel.</p>
+
     </div>
 </div>
 
-@*<div>
-    <a asp-action="Index">Back to List</a>
-</div>*@
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+<script>
+    $(document).ready(function () {
+        ;
+        $('#save-edit').click(function () {
+
+            var commentId = @Html.Raw(JsonConvert.SerializeObject(Model.CommentId, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
+            var text = $('#edited-text').val();
+
+            var sendData = {
+                comment: commentId,
+                commentText: text
+            };
+
+            $.ajax({
+                url: '@Url.Action("Edit", "Comment")',
+                type: 'POST',
+                data: JSON.stringify(sendData),
+                contentType: 'application/json',
+                success: function (result) {
+                    alert(result.message);
+                    location.reload(true);
+                },
+                error: function (xhr) {
+                    alert(xhr.responseJSON.message)
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+    });
+</script>

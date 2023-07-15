@@ -95,14 +95,12 @@
             <br />
 
             <!--for edit comment modal-->
-            <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="editModalLabel" aria-hidden="true">
+            <div class="modal fade" id="editModal" role="dialog">
                 <div class="modal-dialog" role="document">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="editModalLabel">Edit Comment</h5>                         
-                        </div>
                         <div class="modal-body">
-                            @Html.Partial("/Views/Comment/_EditModal.cshtml", comment)
+                            <partial name="/Views/Comment/Edit.cshtml" for="@comment">
+                            <!-- @Html.Partial("/Views/Comment/Edit.cshtml", comment) -->
                         </div>
                     </div>
                 </div>

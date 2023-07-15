@@ -72,13 +72,20 @@ namespace RecipeWebsite.Controllers {
 
         // POST: CommentController/Edit/5
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection) {
-            try {
-                return RedirectToAction(nameof(Index));
+        public async Task<IActionResult> Edit([FromBody] JsonElement data) {
+
+            int id = data.GetProperty("comment").GetInt32();
+            string? text = data.GetProperty("commentText").GetString();
+
+            Comment? comment = await _context.Comments.FindAsync(id);
+
+            if (comment != null) {
+                comment.Content = text;
+                _context.SaveChanges();
+                return Json(new { message = "Comment Edited Succesfully" });
             }
-            catch {
-                return View();
+            else {
+                return Json(new { message = "Comment does not exist" });
             }
         }
 
