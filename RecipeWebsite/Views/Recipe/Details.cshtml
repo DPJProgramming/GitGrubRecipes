@@ -226,6 +226,7 @@
     <!--for edit comment modal-->
     <script>
         $(document).ready(function () {
+
             $('#editModal').on('hidden.bs.modal', function () {
                 $(this).find('.modal-body').html('');
             });
@@ -236,6 +237,12 @@
                     $('#editModal').find('.modal-body').html(data);
                     $('#editModal').modal('show');
                 });
+            });
+
+            window.addEventListener('message', function (event) {
+                if (event.data === 'closeModal') {
+                    $('#editModal').modal('hide');
+                }
             });
         });
     </script>
