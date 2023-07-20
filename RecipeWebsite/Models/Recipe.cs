@@ -42,6 +42,28 @@ namespace RecipeWebsite.Models
         [Required]
         public string Directions { get; set; }
 
+        ///<summary>
+        /// A description of the recipe that the user makes when creating the recipe
+        /// </summary>
+        public string Description { get; set; }
+
+        /// <summary>
+        /// A number from 1 to 5 calculated by averaging all votes from 
+        /// users who have rated the recipe
+        /// </summary>
+        public double Rating { get; set; }
+
+        /// <summary>
+        /// Tracks the number of votes a recipe has
+        /// Used for calculating a recipe's rating
+        /// </summary>
+        public int Votes { get; set; }
+
+        /// <summary>
+        /// The type of recipe i.e dessert, meat, side dish ect.
+        /// </summary>
+        public string Category { get; set; }
+        
         /// <summary>
         /// A list of Comment objects that stores attached comments
         /// </summary>
