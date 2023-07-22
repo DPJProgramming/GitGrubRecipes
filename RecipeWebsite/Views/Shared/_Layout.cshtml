@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@{
+    //gets logged in user
+    //private UserManager<User> user;
+    //System.Security.Claims.ClaimsPrincipal currentUser = this.User;
+}
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -23,11 +29,18 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Recipe" asp-action="Index">Home</a>
                         </li>
                         <li>
+                        @if (User.Identity.IsAuthenticated) {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Recipe" asp-action="MyFavorites">My Favorites</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-controller="Recipe" asp-action="Create">Create A Recipe</a>
+                            </li>
+                        }
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Recipe" asp-action="MyFavorites">My Favorites</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Recipe" asp-action="test">test</a>
                         </li>
                     </ul>
-
                     <partial name="_LoginPartial" />
                 </div>
             </div>
