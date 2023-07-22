@@ -63,7 +63,12 @@ namespace RecipeWebsite.Models
         /// The type of recipe i.e dessert, meat, side dish ect.
         /// </summary>
         public string Category { get; set; }
-        
+
+        /// <summary>
+        /// A second category to organize recipes i.e. cookie, beef, ect.
+        /// </summary>
+        public string SubCategory { get; set; }
+
         /// <summary>
         /// A list of Comment objects that stores attached comments
         /// </summary>
@@ -85,6 +90,8 @@ namespace RecipeWebsite.Models
         public string Title { get; set; }
 
         public string Category { get; set; }
+
+        public string SubCategory { get; set; }
 
         public string Description { get; set; }
 

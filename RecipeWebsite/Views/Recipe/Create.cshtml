@@ -36,19 +36,28 @@
     </div>
     <br />*@
 
-    <label asp-for="Category">What Type of Food is this?</label>
+    <label asp-for="Category">What Type of Dish is This?</label>
     <select class="dropdown" asp-for="Category">
-        <option value="1">Breakfast</option>
-        <option value="2">Lunch</option>
-        <option value="3">Dinner</option>
-        <option value="3">Beverage</option>
-        <option value="3">Dessert</option>
-        <option value="3">Side</option>
-        <option value="3">Soup</option>
-        <option value="3">Salad</option>
-        <option value="3">Bread</option>
+		<option value="Meat">Meat</option>
+		<option value="Bread">Bread</option>
+        <option value="Vegetable">Vegetable</option>
+        <option value="Dairy">Dairy</option>
+        <option value="Beverage">Beverage</option>
+        <option value="Dessert">Dessert</option>
+        <option value="Soup">Soup</option>
+        <option value="Salad">Salad</option>        
     </select>
     <span asp-validation-for="Category" class="text-danger"></span>
+
+    <label hidden asp-for="SubCategory">What Type of Food is this?</label>
+    <select hidden class="dropdown" asp-for="SubCategory">
+        <option value="Beef">Beef</option>
+        <option value="Poultry">Poultry</option>
+        <option value="Egg">Egg</option>
+        <option value="Pork">Pork</option>
+        <option value="Fish">Fish</option>
+    </select>
+    <span asp-validation-for="SubCategory" class="text-danger"></span>
     <br />
     <br />
 

@@ -35,6 +35,41 @@
         <input asp-for="ImageUrl" class="form-control" />
         <span asp-validation-for="ImageUrl" class="text-danger"></span>
     </div>
+
+    <label asp-for="Category">What Type of Dish is This?</label>
+    <select class="dropdown" asp-for="Category">
+        <option value="Meat">Meat</option>
+        <option value="Bread">Bread</option>
+        <option value="Vegetable">Vegetable</option>
+        <option value="Dairy">Dairy</option>
+        <option value="Beverage">Beverage</option>
+        <option value="Dessert">Dessert</option>
+        <option value="Soup">Soup</option>
+        <option value="Salad">Salad</option>
+    </select>
+    <span asp-validation-for="Category" class="text-danger"></span>
+    <br />
+    <br />
+
+    <label hidden asp-for="SubCategory">What Type of Food is this?</label>
+    <select hidden class="dropdown" asp-for="SubCategory">
+        <option value="Beef">Beef</option>
+        <option value="Poultry">Poultry</option>
+        <option value="Egg">Egg</option>
+        <option value="Pork">Pork</option>
+        <option value="Fish">Fish</option>
+    </select>
+    <span asp-validation-for="SubCategory" class="text-danger"></span>
+    <br />
+    <br />
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea>
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <br />
+
     <div class="form-group">
         <label asp-for="Directions"></label>
         <textarea asp-for="Directions" class="form-control"></textarea>
