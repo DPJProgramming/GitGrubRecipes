@@ -84,6 +84,10 @@ namespace RecipeWebsite.Models
 
         public string Title { get; set; }
 
+        public string Category { get; set; }
+
+        public string Description { get; set; }
+
         [ValidateNever]
         public string ImageUrl { get; set; }
 

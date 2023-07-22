@@ -15,18 +15,63 @@
         <input asp-for="Title" class="form-control" />
         <span asp-validation-for="Title" class="text-danger"></span>
     </div>
+    <br />
+    @*<div class="form-group">
+        <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Category
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+			    <li><a class="dropdown-item" href="#">Breakfast</a></li>
+			    <li><a class="dropdown-item" href="#">Lunch</a></li>
+			    <li><a class="dropdown-item" href="#">Dinner</a></li>
+			    <li><a class="dropdown-item" href="#">Beverage</a></li>
+			    <li><a class="dropdown-item" href="#">Dessert</a></li>
+			    <li><a class="dropdown-item" href="#">Side</a></li>
+			    <li><a class="dropdown-item" href="#">Soup</a></li>
+			    <li><a class="dropdown-item" href="#">Salad</a></li>
+			    <li><a class="dropdown-item" href="#">Bread</a></li>
+            </ul>
+        </div>
+    </div>
+    <br />*@
+
+    <label asp-for="Category">What Type of Food is this?</label>
+    <select class="dropdown" asp-for="Category">
+        <option value="1">Breakfast</option>
+        <option value="2">Lunch</option>
+        <option value="3">Dinner</option>
+        <option value="3">Beverage</option>
+        <option value="3">Dessert</option>
+        <option value="3">Side</option>
+        <option value="3">Soup</option>
+        <option value="3">Salad</option>
+        <option value="3">Bread</option>
+    </select>
+    <span asp-validation-for="Category" class="text-danger"></span>
+    <br />
+    <br />
+
+    <div class="form-group">
+        <label asp-for="Description"></label>
+        <textarea asp-for="Description" class="form-control"></textarea> 
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <br />
 
     <div class="form-group">
         <label asp-for="ImageUrl"></label>
         <input asp-for="ImageUrl" class="form-control" />
         <span asp-validation-for="ImageUrl" class="text-danger"></span>
     </div>
+    <br />
 
     <div class="form-group">
         <label asp-for="Directions"></label>
         <textarea asp-for="Directions" class="form-control"></textarea>
         <span asp-validation-for="Directions" class="text-danger"></span>
     </div>
+    <br />
 
     <h4>Ingredients</h4>
     <hr />
@@ -60,7 +105,7 @@
     <button type="submit" class="btn btn-primary">Create</button>
 </form>
 
-@section scripts {
+@section Scripts {
     <script>
         var i = @i;
         $(document).ready(function () {

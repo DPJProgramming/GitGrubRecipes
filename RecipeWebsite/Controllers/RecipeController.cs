@@ -105,6 +105,8 @@ namespace RecipeWebsite.Controllers
                 var recipe = new Recipe();
                 recipe.Title = viewModel.Title;
                 recipe.ImageUrl = !string.IsNullOrEmpty(viewModel.ImageUrl) ? viewModel.ImageUrl : "https://i.imgur.com/zIAshBo.png";
+                recipe.Description = viewModel.Description;
+                recipe.Category = viewModel.Category;
                 recipe.Directions = viewModel.Directions;
 
                 // Assign Ingredients list from viewModel to Recipe
@@ -388,6 +390,10 @@ namespace RecipeWebsite.Controllers
             var sanitizer = new HtmlSanitizer();
             var sanitizedString = sanitizer.Sanitize(str.Replace("\r\n", "<br />"));
             return sanitizedString;
+        }
+
+        public IActionResult test() {
+            return View();
         }
     }
 }
