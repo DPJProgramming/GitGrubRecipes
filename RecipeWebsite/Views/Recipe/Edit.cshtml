@@ -37,7 +37,7 @@
     </div>
 
     <label asp-for="Category">What Type of Dish is This?</label>
-    <select class="dropdown" asp-for="Category">
+    <select class="btn btn-secondary" asp-for="Category">
         <option value="Meat">Meat</option>
         <option value="Bread">Bread</option>
         <option value="Vegetable">Vegetable</option>
@@ -48,11 +48,9 @@
         <option value="Salad">Salad</option>
     </select>
     <span asp-validation-for="Category" class="text-danger"></span>
-    <br />
-    <br />
 
     <label hidden asp-for="SubCategory">What Type of Food is this?</label>
-    <select hidden class="dropdown" asp-for="SubCategory">
+    <select hidden class="btn btn-secondary" asp-for="SubCategory">
         <option value="Beef">Beef</option>
         <option value="Poultry">Poultry</option>
         <option value="Egg">Egg</option>
