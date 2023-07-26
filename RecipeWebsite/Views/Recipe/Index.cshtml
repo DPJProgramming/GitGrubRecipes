@@ -14,21 +14,34 @@
     <tbody>
         @foreach (var item in Model)
         {
-            <tr class=" mx-auto hover-card">
+            <tr class=" mx-auto hover-card recipe-row" data-href="@Url.Action("Details", new { id = item.RecipeId })">
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.RecipeId">
-                        <div style="height: 100px; overflow: hidden">
-                            <img src="@item.ImageUrl" alt="Recipe-Picture" width="100"/> 
-                        </div>
-                    </a>
+                    <div style="height: 100px; overflow: hidden">
+                        <img src="@item.ImageUrl" alt="Recipe-Picture" width="100"/> 
+                    </div>
                 </td>
                 <td>
-                    <a asp-action="Details" asp-route-id="@item.RecipeId">@Html.DisplayFor(modelItem => item.Title)</a>
+                    <h5 asp-action="Details" asp-route-id="@item.RecipeId">@Html.DisplayFor(modelItem => item.Title)</h5>
                 </td>
                 <td asp-action="Details" asp-route-id="@item.RecipeId">
-                    <a asp-action="Details" asp-route-id="@item.RecipeId">@Html.DisplayFor(modelItem => item.Description)</a>
+                    <p asp-action="Details" asp-route-id="@item.RecipeId">@Html.DisplayFor(modelItem => item.Description)</p>
                 </td>
-            </tr>
+            </tr> 
         }
     </tbody>
 </table>
+
+@section Scripts{
+    <script>
+        
+        //handles the click of a row to navigate to recipe's detail page
+        document.addEventListener("DOMContentLoaded", function () {
+            const recipeRows = document.querySelectorAll(".recipe-row");
+            recipeRows.forEach(recipeRow => {
+                recipeRow.addEventListener("click", function () {
+                    window.location = recipeRow.dataset.href;
+                });
+            });
+        });
+    </script>
+}

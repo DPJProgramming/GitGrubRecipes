@@ -54,3 +54,7 @@ h1 {
 .nav-link:hover::after {
     width: 100%;
 }
+
+.recipe-row{
+    cursor: pointer;
+}
