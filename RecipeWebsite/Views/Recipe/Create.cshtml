@@ -16,28 +16,9 @@
         <span asp-validation-for="Title" class="text-danger"></span>
     </div>
     <br />
-    @*<div class="form-group">
-        <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                Category
-            </button>
-            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-			    <li><a class="dropdown-item" href="#">Breakfast</a></li>
-			    <li><a class="dropdown-item" href="#">Lunch</a></li>
-			    <li><a class="dropdown-item" href="#">Dinner</a></li>
-			    <li><a class="dropdown-item" href="#">Beverage</a></li>
-			    <li><a class="dropdown-item" href="#">Dessert</a></li>
-			    <li><a class="dropdown-item" href="#">Side</a></li>
-			    <li><a class="dropdown-item" href="#">Soup</a></li>
-			    <li><a class="dropdown-item" href="#">Salad</a></li>
-			    <li><a class="dropdown-item" href="#">Bread</a></li>
-            </ul>
-        </div>
-    </div>
-    <br />*@
 
     <label asp-for="Category">What Type of Dish is This?</label>
-    <select class="dropdown" asp-for="Category">
+    <select class="btn btn-secondary" asp-for="Category">
 		<option value="Meat">Meat</option>
 		<option value="Bread">Bread</option>
         <option value="Vegetable">Vegetable</option>
@@ -50,7 +31,7 @@
     <span asp-validation-for="Category" class="text-danger"></span>
 
     <label hidden asp-for="SubCategory">What Type of Food is this?</label>
-    <select hidden class="dropdown" asp-for="SubCategory">
+    <select hidden class="btn btn-secondary" asp-for="SubCategory">
         <option value="Beef">Beef</option>
         <option value="Poultry">Poultry</option>
         <option value="Egg">Egg</option>

@@ -10,21 +10,25 @@
 {
     <h4 class="text-center">Sign in to Create Your Own Recipes and Add to Your Favorites List!</h4>
 }
-
-<div class="container">
-    <div class="row">
+<table>
+    <tbody>
         @foreach (var item in Model)
         {
-            <div class="col-md-4">
-                <a asp-action="Details" asp-route-id="@item.RecipeId" style="text-decoration: none; color: inherit;">
-                    <div class="card mx-auto hover-card" style="width: 20rem;">
-                        <img src="@item.ImageUrl" class="card-img-top" alt="Recipe Image">
-                        <div class="card-body">
-                            <h4 class="card-text">@Html.DisplayFor(modelItem => item.Title)</h4>
+            <tr class=" mx-auto hover-card">
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.RecipeId">
+                        <div style="height: 100px; overflow: hidden">
+                            <img src="@item.ImageUrl" alt="Recipe-Picture" width="100"/> 
                         </div>
-                    </div>
-                </a>
-            </div>
+                    </a>
+                </td>
+                <td>
+                    <a asp-action="Details" asp-route-id="@item.RecipeId">@Html.DisplayFor(modelItem => item.Title)</a>
+                </td>
+                <td asp-action="Details" asp-route-id="@item.RecipeId">
+                    <a asp-action="Details" asp-route-id="@item.RecipeId">@Html.DisplayFor(modelItem => item.Description)</a>
+                </td>
+            </tr>
         }
-    </div>
-</div>
+    </tbody>
+</table>
