@@ -70,6 +70,11 @@ namespace RecipeWebsite.Models
         public string SubCategory { get; set; }
 
         /// <summary>
+        /// The day and time the recipe was created by the user
+        /// </summary>
+        public DateTime DateCreated {get; set;}
+
+        /// <summary>
         /// A list of Comment objects that stores attached comments
         /// </summary>
         public ICollection<Comment>? Comments { get; set; }

@@ -109,6 +109,7 @@ namespace RecipeWebsite.Controllers
                 recipe.Category = viewModel.Category;
                 recipe.SubCategory = ".";
                 recipe.Directions = viewModel.Directions;
+                recipe.DateCreated = DateTime.Now;
 
                 // Assign Ingredients list from viewModel to Recipe
                 recipe.Ingredients = viewModel.Ingredients.Select(i => { i.Recipe = recipe; return i; }).ToList();
