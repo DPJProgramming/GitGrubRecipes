@@ -6,6 +6,17 @@
 
 <h1 class="text-center">Welcome To GitGrub</h1>
 
+<label>Sort By</label>
+<select id="sorting" class="btn btn-secondary">
+    <option value="Name">Name</option>
+    <option value="Date">Newest</option>
+    <option value="ReverseDate">Oldest</option>
+    <option value="Category">Category</option>
+    <option value="Rating">Rating</option>
+</select>
+<br />
+<br />
+
 @if (!User.Identity.IsAuthenticated)
 {
     <h4 class="text-center">Sign in to Create Your Own Recipes and Add to Your Favorites List!</h4>
