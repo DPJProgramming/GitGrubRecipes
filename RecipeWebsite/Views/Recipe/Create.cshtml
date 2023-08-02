@@ -19,6 +19,9 @@
 
     <label asp-for="Category">What Type of Dish is This?</label>
     <select class="btn btn-secondary" asp-for="Category">
+        <option value="Breakfast">Breakfast</option>
+        <option value="Lunch">Lunch</option>
+        <option value="Dinner">Dinner</option>
 		<option value="Meat">Meat</option>
 		<option value="Bread">Bread</option>
         <option value="Vegetable">Vegetable</option>
@@ -26,7 +29,8 @@
         <option value="Beverage">Beverage</option>
         <option value="Dessert">Dessert</option>
         <option value="Soup">Soup</option>
-        <option value="Salad">Salad</option>        
+        <option value="Salad">Salad</option>
+        <option value="Pasta">Pasta</option>
     </select>
     <span asp-validation-for="Category" class="text-danger"></span>
 

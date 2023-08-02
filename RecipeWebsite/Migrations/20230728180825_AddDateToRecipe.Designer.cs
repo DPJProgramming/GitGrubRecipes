@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RecipeWebsite.Data;
 
@@ -11,9 +12,10 @@ using RecipeWebsite.Data;
 namespace RecipeWebsite.Migrations
 {
     [DbContext(typeof(RecipeWebsiteContext))]
-    partial class RecipeWebsiteContextModelSnapshot : ModelSnapshot
+    [Migration("20230728180825_AddDateToRecipe")]
+    partial class AddDateToRecipe
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -245,8 +247,8 @@ namespace RecipeWebsite.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTimeOffset>("DateCreated")
-                        .HasColumnType("datetimeoffset");
+                    b.Property<DateTime>("DateCreated")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("Description")
                         .IsRequired()

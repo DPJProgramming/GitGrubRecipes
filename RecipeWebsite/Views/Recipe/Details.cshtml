@@ -173,7 +173,7 @@
                 //converts the current recipe into data that can be sent
                 var recipeData = @Html.Raw(JsonConvert.SerializeObject(Model.Recipe, new JsonSerializerSettings { ReferenceLoopHandling = ReferenceLoopHandling.Ignore }));
                 
-                //creates an onbject with the needed data
+                //creates an object with the needed data
                 var sendData = {
                     commentText: commentText,
                     recipe: recipeData
