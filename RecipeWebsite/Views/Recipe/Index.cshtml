@@ -154,6 +154,9 @@
                 imgDiv.style.height = "100px";
                 imgDiv.style.overflow = "hidden";
                 var img = document.createElement("img");
+                img.onerror = function () {
+                    img.src = "/lib/images/ImgPlaceHolder.jpg";
+                };
                 img.src = item.ImageUrl;
                 img.alt = "Recipe-Picture";
                 img.width = "100";
