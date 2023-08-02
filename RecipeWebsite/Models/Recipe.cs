@@ -72,7 +72,7 @@ namespace RecipeWebsite.Models
         /// <summary>
         /// The day and time the recipe was created by the user
         /// </summary>
-        public DateTime DateCreated {get; set;}
+        public DateTimeOffset DateCreated {get; set;}
 
         /// <summary>
         /// A list of Comment objects that stores attached comments

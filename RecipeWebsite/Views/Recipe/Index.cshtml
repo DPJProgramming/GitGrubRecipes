@@ -15,9 +15,9 @@
 
 <label>Sort By</label>
 <select title="sort-dropdown" id="sorting" class="btn btn-secondary" onchange="sortRecipes()">
-    <option value="Name">Name</option>
-    <option value="Date">Newest</option>
     <option value="ReverseDate">Oldest</option>
+    <option value="Date">Newest</option>
+    <option value="Name">Name</option>
     <option value="Category">Category</option>
     <option value="Rating">Rating</option>
 </select>
@@ -25,13 +25,14 @@
 <br />
 
 @{
-    //for sorting recipes in recipe table
-    IEnumerable<Recipe> sortedRecipes = Model.OrderBy(a => a.Title);
+    //for sorting recipes in recipe table from get create in recipe controller
+    //IEnumerable<Recipe> sortedRecipes = Model.OrderBy(a => a.DateCreated);
 }
 
 <table id="show-recipes">
     <tbody>
-        @foreach (var item in sortedRecipes)
+        @*if using recipe controller to populate list. otherwise javascript is used*@
+        @*@foreach (var item in sortedRecipes)
         {
             <tr class=" mx-auto hover-card recipe-row" data-href="@Url.Action("Details", new { id = item.RecipeId })">
                 <td>
@@ -46,30 +47,145 @@
                     <p asp-action="Details" asp-route-id="@item.RecipeId">@Html.DisplayFor(modelItem => item.Description)</p>
                 </td>
             </tr> 
-        }
+        }*@
     </tbody>
 </table>
+
+@{
+    // Serialize Model using custom JsonSerializerSettings to preserve property casing
+    var serializerSettings = new Newtonsoft.Json.JsonSerializerSettings {
+                ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver {
+                    NamingStrategy = new Newtonsoft.Json.Serialization.DefaultNamingStrategy()
+                }
+            };
+
+    // Serialize the Model using custom settings
+    var serializedModel = Newtonsoft.Json.JsonConvert.SerializeObject(Model, serializerSettings);
+}
 
 @section Scripts{
     <script>
         
         //handles the click of a row to navigate to recipe's detail page
-        document.addEventListener("DOMContentLoaded", function () {
-            const recipeRows = document.querySelectorAll(".recipe-row");
-            recipeRows.forEach(recipeRow => {
-                recipeRow.addEventListener("click", function () {
-                    window.location = recipeRow.dataset.href;
-                });
-            });
-        });
+        //function addRecipeClick(){
+        //    const recipeRows = document.querySelectorAll(".recipe-row");
+        //    recipeRows.forEach(recipeRow => {
+        //        recipeRow.addEventListener("click", function () {
+        //            alert("click");
+        //            window.location = recipeRow.dataset.href;
+        //        });
+        //    });
+        //});
+    </script>
+   
+    <script>
+        //function sortRecipes(){
+        //    alert("sort");
+        //    if ($('#sorting').val() == 'Name') {
+        //        sortedRecipes = sortedRecipes.sort(a => a.Title);
+        //        location.reload(true);
+        //    }
+        //}
     </script>
 
     <script>
-        function sortRecipes(){
-            if ($('#sorting').val() == 'Name') {
-                sortedRecipes = sortedRecipes.sort(a => a.Title);
-                location.reload(true);
+        var sortedRecipes = @Html.Raw(serializedModel);
+
+        // Automatically run createRecipeRows() when the page loads
+        document.addEventListener("DOMContentLoaded", function () {
+            createRecipeRows(sortedRecipes);
+        });
+
+        function sortRecipes() {
+            var sortingOption = document.getElementById("sorting").value;
+            var sorted = sortedRecipes.slice(0);
+
+            switch (sortingOption) {
+                case "Name":
+                    sorted.sort(function (a, b) {
+                        return a.Title.localeCompare(b.Title);
+                    });
+                    break;
+                case "Date":
+                    sorted.sort(function (a, b) {
+                        return new Date(b.DateCreated) - new Date(a.DateCreated);
+                    });
+                    break;
+                case "ReverseDate":
+                    sorted.sort(function (a, b) {
+                        //console.log(new Date(a.DateCreated));
+                        return new Date(a.DateCreated) - new Date(b.DateCreated);
+                    });
+                    break;
+                case "Category":
+                    sorted.sort(function (a, b) { 
+                        return a.Category.localeCompare(b.Category);
+                    });
+                    break;
+                case "Rating":
+                    sorted.sort(function (a, b) {
+                        return b.Rating - a.Rating;
+                    });
+                    break;
+                default:
+                    // Default sorting option or "Sort By" option selected
+                    sorted.sort(function (a, b) {
+                        return a.Title.localeCompare(b.Title);
+                    });
+                    break;
             }
+
+            createRecipeRows(sorted);
         }
+
+        function createRecipeRows(recipes) {
+            var tableBody = document.querySelector("#show-recipes tbody");
+            tableBody.innerHTML = "";
+
+            recipes.forEach(function (item) {
+                var row = document.createElement("tr");
+                row.classList.add("mx-auto", "hover-card", "recipe-row");
+
+                var url = '@Url.Action("Details", "Recipe")?id=' + item.RecipeId;
+                row.setAttribute("data-href", url);
+
+                var imgCell = document.createElement("td");
+                var imgDiv = document.createElement("div");
+                imgDiv.style.height = "100px";
+                imgDiv.style.overflow = "hidden";
+                var img = document.createElement("img");
+                img.src = item.ImageUrl;
+                img.alt = "Recipe-Picture";
+                img.width = "100";
+                imgDiv.appendChild(img);
+                imgCell.appendChild(imgDiv);
+                row.appendChild(imgCell);
+
+                var titleCell = document.createElement("td");
+                var title = document.createElement("h5");
+                title.textContent = item.Title;
+                titleCell.appendChild(title);
+                row.appendChild(titleCell);
+
+                var descriptionCell = document.createElement("td");
+                var description = document.createElement("p");
+                description.textContent = item.Description;
+                descriptionCell.appendChild(description);
+                row.appendChild(descriptionCell);
+
+                tableBody.appendChild(row);
+            });
+            addRecipeClick();
+        };
+
+        function addRecipeClick() {
+            const recipeRows = document.querySelectorAll(".recipe-row");
+            recipeRows.forEach(recipeRow => {
+                recipeRow.addEventListener("click", function () {
+                    alert("click");
+                    window.location = recipeRow.dataset.href;
+                });
+            });
+        };
     </script>
 }
