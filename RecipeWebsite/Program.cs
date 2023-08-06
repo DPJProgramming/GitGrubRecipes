@@ -37,8 +37,6 @@ builder.Services.Configure<IdentityOptions>(options => {
     options.User.RequireUniqueEmail = false;
 });
 
-//code from lecture week 8 day 2 ast video to automatically aplly migrations
-//error aspnetusers already exsists
 var app = builder.Build();
 
 using IServiceScope scope = app.Services.CreateScope();
@@ -68,3 +66,13 @@ app.MapControllerRoute(
 app.MapRazorPages();
 
 app.Run();
+
+public static partial class Program {
+    public static string apiKey() {
+        var builder = WebApplication.CreateBuilder();
+        return builder.Configuration.GetSection("NutritionApi").Value;
+    }
+}
+
+
+
