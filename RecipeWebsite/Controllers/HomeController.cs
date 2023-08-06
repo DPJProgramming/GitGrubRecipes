@@ -39,6 +39,12 @@ namespace RecipeWebsite.Controllers {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
+        /// <summary>
+        /// Recieves data containing information from the Nutrition API, 
+        /// and passes it as a list of NutritionInfoDTO objects to the partial view for display
+        /// </summary>
+        /// <param name="result"></param>
+        /// <returns></returns>
         public IActionResult NutritionModal(string result) {
             
             var jsonData = JsonConvert.DeserializeObject<dynamic>(result);
@@ -63,7 +69,6 @@ namespace RecipeWebsite.Controllers {
 
                 foodList.Add(food);
             }
-            //return PartialView("_NutritionModal", new List<NutritionInfoDTO>());
             return PartialView("_NutritionModal", foodList);
         }
     }

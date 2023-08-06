@@ -72,10 +72,10 @@
             $.ajax({
                 method: 'GET',
                 url: '/Home/NutritionModal',
-                data: { result: JSON.stringify(result) }, // Convert the JSON object to a string
+                data: { result: JSON.stringify(result) }, 
                 success: function (response) {
-                    $('#nutritionModal .modal-body').html(response); // Update the modal body with the response data
-                    $('#nutritionModal').modal('show'); // Show the modal
+                    $('#nutritionModal .modal-body').html(response); 
+                    $('#nutritionModal').modal('show'); 
                 },
                 error: function ajaxError(jqXHR) {
                     console.error('Error: ', jqXHR.responseText);
@@ -83,6 +83,7 @@
             });
         }
       
+        //Nutrition Information API https://calorieninjas.com/
         function sendApi() {
             var apiKey = '@Html.Raw(api)';
             var food = $('#api-request').val();
