@@ -1,0 +1,45 @@
+﻿@model List<NutritionInfoDTO>
+
+<div class="demo" id="text-demo" style="">
+    <div style="margin: 20px;">
+        <h3>Nutrition Results</h3>
+    </div>
+    <div class="table-responsive">
+        <table class="table table-striped" style="width: 100%;">
+            <thead class="thead-dark">
+                <tr>
+                    <th scope="col">Name</th>
+                    <th scope="col">Serving Size</th>
+                    <th scope="col">Calories</th>
+                    <th scope="col">Total Fat</th>
+                    <th scope="col">Saturated Fat</th>
+                    <th scope="col">Cholesterol</th>
+                    <th scope="col">Sodium</th>
+                    <th scope="col">Carbohydrates</th>
+                    <th scope="col">Fiber</th>
+                    <th scope="col">Sugar</th>
+                    <th scope="col">Protein</th>
+                </tr>
+            </thead>
+            <tbody id="result">
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>@item.name</td>
+                        <td>@item.serving_size_g g</td>
+                        <td>@item.calories</td>
+                        <td>@item.fat_total_g g</td>
+                        <td>@item.fat_saturated_g g</td>
+                        <td>@item.cholesterol_mg mg</td>
+                        <td>@item.sodium_mg mg</td>
+                        <td>@item.carbohydrates_total_g g</td>
+                        <td>@item.fiber_g g</td>
+                        <td>@item.sugar_g g</td>
+                        <td>@item.protein_g g</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>
+

@@ -3,6 +3,10 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
+<label for="nutrition">Nutrition Information</label>
+<input id="api-request" placeholder="Enter an Ingredient">
+<button type="button" id="send-api" class="btn btn-primary" onclick="sendApi()">Submit</button>
+
 <ul class="navbar-nav">
 @if (SignInManager.IsSignedIn(User))
 {
