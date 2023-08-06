@@ -64,29 +64,6 @@
 }
 
 @section Scripts{
-    <script>
-        
-        //handles the click of a row to navigate to recipe's detail page
-        //function addRecipeClick(){
-        //    const recipeRows = document.querySelectorAll(".recipe-row");
-        //    recipeRows.forEach(recipeRow => {
-        //        recipeRow.addEventListener("click", function () {
-        //            alert("click");
-        //            window.location = recipeRow.dataset.href;
-        //        });
-        //    });
-        //});
-    </script>
-   
-    <script>
-        //function sortRecipes(){
-        //    alert("sort");
-        //    if ($('#sorting').val() == 'Name') {
-        //        sortedRecipes = sortedRecipes.sort(a => a.Title);
-        //        location.reload(true);
-        //    }
-        //}
-    </script>
 
     <script>
         var sortedRecipes = @Html.Raw(serializedModel);
@@ -185,7 +162,6 @@
             const recipeRows = document.querySelectorAll(".recipe-row");
             recipeRows.forEach(recipeRow => {
                 recipeRow.addEventListener("click", function () {
-                    alert("click");
                     window.location = recipeRow.dataset.href;
                 });
             });
