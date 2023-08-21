@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
 using RecipeWebsite.Data;
 using RecipeWebsite.Models;
 
@@ -17,13 +19,14 @@ namespace RecipeWebsite.Controllers
     public class RecipeController : Controller
     {
         private readonly RecipeWebsiteContext _context;
-
+        private readonly IWebHostEnvironment _environment;
         private readonly UserManager<User> _userManager;
 
-        public RecipeController(RecipeWebsiteContext context, UserManager<User> userManager)
+        public RecipeController(RecipeWebsiteContext context, UserManager<User> userManager, IWebHostEnvironment environment)
         {
             _context = context;
             _userManager = userManager;
+            _environment = environment;
         }
 
         /// <summary>
@@ -100,11 +103,18 @@ namespace RecipeWebsite.Controllers
         [HttpPost]
         public async Task<IActionResult> Create(RecipeViewModel viewModel)
         {
+            //configure file upload url with user's file
+            string fileName = Guid.NewGuid().ToString();
+            fileName += Path.GetExtension(viewModel.ImageUrl?.FileName);
+            string uploadPath = Path.Combine(_environment.WebRootPath, "img", fileName);
+            using Stream fileStream = new FileStream(uploadPath, FileMode.Create);
+            await viewModel.ImageUrl.CopyToAsync(fileStream);
+
             if (ModelState.IsValid)
             {
                 var recipe = new Recipe();
                 recipe.Title = viewModel.Title;
-                recipe.ImageUrl = !string.IsNullOrEmpty(viewModel.ImageUrl) ? viewModel.ImageUrl : "https://i.imgur.com/zIAshBo.png";
+                recipe.ImageUrl = fileName; //!string.IsNullOrEmpty(viewModel.ImageUrl) ? viewModel.ImageUrl : "https://i.imgur.com/zIAshBo.png";
                 recipe.Description = viewModel.Description;
                 recipe.Category = viewModel.Category;
                 recipe.SubCategory = ".";
@@ -150,7 +160,7 @@ namespace RecipeWebsite.Controllers
             var viewModel = new RecipeViewModel();
             viewModel.RecipeId = recipe.RecipeId;
             viewModel.Title = recipe.Title;
-            viewModel.ImageUrl = recipe.ImageUrl;
+            viewModel.ExistingImage = "./img/" + recipe.ImageUrl;
             viewModel.Directions = recipe.Directions;
             viewModel.Description = recipe.Description;
             viewModel.Ingredients = recipe.Ingredients?.ToList() ?? new List<Ingredient>(); // Null-check and initialization if null
@@ -171,6 +181,13 @@ namespace RecipeWebsite.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, RecipeViewModel viewModel)
         {
+            //configure file upload url with user's file
+            string fileName = Guid.NewGuid().ToString();
+            fileName += Path.GetExtension(viewModel.ImageUrl?.FileName);
+            string uploadPath = Path.Combine(_environment.WebRootPath, "img", fileName);
+            using Stream fileStream = new FileStream(uploadPath, FileMode.Create);
+            await viewModel.ImageUrl.CopyToAsync(fileStream);
+
             if (id != viewModel.RecipeId)
             {
                 return NotFound();
@@ -191,7 +208,7 @@ namespace RecipeWebsite.Controllers
 
                     // Update Recipe fields
                     originalRecipe.Title = viewModel.Title;
-                    originalRecipe.ImageUrl = viewModel.ImageUrl;
+                    originalRecipe.ImageUrl = fileName;
                     originalRecipe.Category = viewModel.Category;
                     originalRecipe.SubCategory = "";
                     originalRecipe.Description = viewModel.Description;
