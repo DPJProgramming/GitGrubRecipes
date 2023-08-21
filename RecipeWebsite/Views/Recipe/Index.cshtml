@@ -31,7 +31,7 @@
 
 <table id="show-recipes">
     <tbody>
-        @*if using recipe controller to populate list. otherwise javascript is used*@
+        @*if using recipe controller (no sorting) to populate list. otherwise javascript is used*@
         @*@foreach (var item in sortedRecipes)
         {
             <tr class=" mx-auto hover-card recipe-row" data-href="@Url.Action("Details", new { id = item.RecipeId })">
@@ -134,7 +134,7 @@
                 img.onerror = function () {
                     img.src = "/lib/images/ImgPlaceHolder.jpg";
                 };
-                img.src = item.ImageUrl;
+                img.src = "./img/" + item.ImageUrl;
                 img.alt = "Recipe-Picture";
                 img.width = "100";
                 imgDiv.appendChild(img);
