@@ -22,7 +22,7 @@
 <h4>Recipe</h4>
 <hr />
 
-<form asp-controller="Recipe" asp-action="Edit" method="post">
+<form asp-controller="Recipe" asp-action="Edit" method="post" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <input type="hidden" asp-for="RecipeId" />
     <div class="form-group">
