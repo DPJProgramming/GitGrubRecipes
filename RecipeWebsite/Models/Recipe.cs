@@ -101,7 +101,10 @@ namespace RecipeWebsite.Models
         public string Description { get; set; }
 
         [ValidateNever]
-        public string ImageUrl { get; set; }
+        public IFormFile ImageUrl { get; set; }
+
+        [ValidateNever]
+        public string ExistingImage { get; set; }
 
         public string Directions { get; set; }
 
