@@ -54,12 +54,6 @@ namespace RecipeWebsite.Models
         public double Rating { get; set; }
 
         /// <summary>
-        /// Tracks the number of votes a recipe has
-        /// Used for calculating a recipe's rating
-        /// </summary>
-        public int Votes { get; set; }
-
-        /// <summary>
         /// The type of recipe i.e dessert, meat, side dish ect.
         /// </summary>
         public string Category { get; set; }

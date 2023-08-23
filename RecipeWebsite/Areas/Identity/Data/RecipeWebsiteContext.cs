@@ -47,4 +47,6 @@ public class RecipeWebsiteContext : IdentityDbContext<User>
     public DbSet<Comment>? Comments { get; set; }
 
     public DbSet<FavoriteRecipe> FavoriteRecipes { get; set; }
+
+    public DbSet<Rating> Ratings { get; set; }
 }
