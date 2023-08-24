@@ -18,7 +18,11 @@ body {
 }
 
 h1 {
-    margin-bottom: 50px;
+    margin-bottom: 10px;
+}
+
+h5{
+    margin-bottom: 15px;
 }
 
 .card {

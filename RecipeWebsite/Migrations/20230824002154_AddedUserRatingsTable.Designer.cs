@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using RecipeWebsite.Data;
 
@@ -11,9 +12,10 @@ using RecipeWebsite.Data;
 namespace RecipeWebsite.Migrations
 {
     [DbContext(typeof(RecipeWebsiteContext))]
-    partial class RecipeWebsiteContextModelSnapshot : ModelSnapshot
+    [Migration("20230824002154_AddedUserRatingsTable")]
+    partial class AddedUserRatingsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -345,12 +347,6 @@ namespace RecipeWebsite.Migrations
 
             modelBuilder.Entity("RecipeWebsite.Models.UserRatings", b =>
                 {
-                    b.Property<int>("ratingId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("ratingId"), 1L, 1);
-
                     b.Property<int>("Rating")
                         .HasColumnType("int");
 
@@ -359,8 +355,6 @@ namespace RecipeWebsite.Migrations
 
                     b.Property<string>("UserRated")
                         .HasColumnType("nvarchar(max)");
-
-                    b.HasKey("ratingId");
 
                     b.ToTable("UserRatings");
                 });
