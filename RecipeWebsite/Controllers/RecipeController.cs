@@ -418,5 +418,28 @@ namespace RecipeWebsite.Controllers
         public IActionResult test() {
             return View();
         }
+
+        /// <summary>
+        /// used when a recipe page loads or a user rates a recipe
+        /// </summary>
+        /// <param name="recipeId"></param>
+        /// <param name="rating"></param>
+        /// <returns></returns>
+        //public double getRecipeRating(int recipeId, double initialRating) {
+
+        //}
+
+        public async Task<IActionResult> RateRecipe(int recipeId, int rating) {
+            var currentUser = await _userManager.GetUserAsync(User);
+            UserRatings rate = new();
+
+            rate.RecipeId = recipeId;
+            rate.Rating = rating;
+            rate.UserRated = currentUser.Id;
+
+            _context.UserRatings.Add(rate);
+
+            return Json(new { message = "Added to favorites" });
+        }
     }
 }
