@@ -78,7 +78,7 @@ namespace RecipeWebsite.Controllers
             var viewModel = new RecipeDetailsViewModel {
                 Recipe = recipe,
                 CurrentUser = currentUser,
-                Rating = getRecipeRating(id)
+                Rating = recipe.Rating
             };
 
             return View(viewModel);
@@ -421,12 +421,14 @@ namespace RecipeWebsite.Controllers
         /// </summary>
         /// <param name="recipeId"></param>
         /// <returns></returns>
-        public double getRecipeRating(int recipeId) {
-            int ratingCount = _context.UserRatings.Count(r => r.RecipeId == recipeId);
-            double ratingSum = _context.UserRatings.Where(r => r.RecipeId == recipeId).Sum(r => r.Rating);
+        //public double getRecipeRating(int recipeId) {
+        //    int ratingCount = _context.UserRatings.Count(r => r.RecipeId == recipeId);
+        //    int ratingSum = _context.UserRatings.Where(r => r.RecipeId == recipeId).Sum(r => r.Rating);
 
-            return ratingSum / ratingCount;
-        }
+        //    setRecipeRating(recipeId, ratingCount, ratingSum);
+
+        //    return ratingSum / ratingCount;
+        //}
 
         /// <summary>
         /// Sets a rating for a recipe from the currently logged in user
@@ -450,12 +452,29 @@ namespace RecipeWebsite.Controllers
                 _context.UserRatings.Add(rate);
                 _context.SaveChanges();
 
+                setRecipeRating(recipeId);
+
                 return Json(new { message = "Thanks for rating!" });
             }
             else {
                 return Json(new { message = "Cant Rate more than once"});
             }
 
+        }
+
+        /// <summary>
+        /// Sets the newly calculated rating to the recipe
+        /// </summary>
+        /// <param name="recipeId"></param>
+        /// <param name="ratingCount"></param>
+        /// <param name="ratingSum"></param>
+        public void setRecipeRating(int recipeId) {
+            Recipe recipeToRate = _context.Recipe.FirstOrDefault(r => r.RecipeId == recipeId);
+            int ratingCount = _context.UserRatings.Count(r => r.RecipeId == recipeId);
+            int ratingSum = _context.UserRatings.Where(r => r.RecipeId == recipeId).Sum(r => r.Rating);
+
+            recipeToRate.Rating = ratingSum / ratingCount;
+            _context.SaveChanges();
         }
     }
 }
