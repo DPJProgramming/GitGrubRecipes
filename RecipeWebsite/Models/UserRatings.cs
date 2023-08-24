@@ -1,7 +1,14 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace RecipeWebsite.Models {
     public class UserRatings {
+
+        /// <summary>
+        /// An identifier for a UserRating
+        /// </summary>
+        [Key]
+        public int ratingId { get; set; }
 
         /// <summary>
         /// The recipe that a specific rating/user combination belongs to

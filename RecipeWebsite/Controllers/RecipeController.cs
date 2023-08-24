@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Security.Claims;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Ganss.Xss;
 using Microsoft.AspNetCore.Authorization;
@@ -433,7 +434,10 @@ namespace RecipeWebsite.Controllers
         /// <param name="recipeId"></param>
         /// <param name="rating"></param>
         /// <returns></returns>
-        public async Task<IActionResult> RateRecipe(int recipeId, int rating) {
+        [HttpPost]
+        public async Task<IActionResult> RateRecipe([FromBody] JsonElement data) {
+            int recipeId = data.GetProperty("recipe").GetInt32();
+            int rating = data.GetProperty("ratingNum").GetInt32();
             var currentUser = await _userManager.GetUserAsync(User);
             bool alreadyRated = _context.UserRatings.Any(r => r.UserRated == currentUser.Id && r.RecipeId == recipeId);
 
@@ -444,6 +448,7 @@ namespace RecipeWebsite.Controllers
                 rate.UserRated = currentUser.Id;
 
                 _context.UserRatings.Add(rate);
+                _context.SaveChanges();
 
                 return Json(new { message = "Thanks for rating!" });
             }
