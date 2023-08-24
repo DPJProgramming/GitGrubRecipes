@@ -48,7 +48,7 @@ namespace RecipeWebsite.Controllers
         /// <returns></returns>
         // GET: Recipe/Details/5
         [Authorize]
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(int id)
         {
             if (id == null)
             {
@@ -74,10 +74,10 @@ namespace RecipeWebsite.Controllers
                 currentUser = _context.Users.Include(u => u.MyFavorites).FirstOrDefault(u => u.Id == currentUser.Id);
             }
 
-            var viewModel = new RecipeDetailsViewModel
-            {
+            var viewModel = new RecipeDetailsViewModel {
                 Recipe = recipe,
-                CurrentUser = currentUser
+                CurrentUser = currentUser,
+                Rating = getRecipeRating(id)
             };
 
             return View(viewModel);
@@ -415,31 +415,42 @@ namespace RecipeWebsite.Controllers
             return sanitizedString;
         }
 
-        public IActionResult test() {
-            return View();
+        /// <summary>
+        /// Calculates the mean rating for a recipe
+        /// </summary>
+        /// <param name="recipeId"></param>
+        /// <returns></returns>
+        public double getRecipeRating(int recipeId) {
+            int ratingCount = _context.UserRatings.Count(r => r.RecipeId == recipeId);
+            double ratingSum = _context.UserRatings.Where(r => r.RecipeId == recipeId).Sum(r => r.Rating);
+
+            return ratingSum / ratingCount;
         }
 
         /// <summary>
-        /// used when a recipe page loads or a user rates a recipe
+        /// Sets a rating for a recipe from the currently logged in user
         /// </summary>
         /// <param name="recipeId"></param>
         /// <param name="rating"></param>
         /// <returns></returns>
-        //public double getRecipeRating(int recipeId, double initialRating) {
-
-        //}
-
         public async Task<IActionResult> RateRecipe(int recipeId, int rating) {
             var currentUser = await _userManager.GetUserAsync(User);
-            UserRatings rate = new();
+            bool alreadyRated = _context.UserRatings.Any(r => r.UserRated == currentUser.Id && r.RecipeId == recipeId);
 
-            rate.RecipeId = recipeId;
-            rate.Rating = rating;
-            rate.UserRated = currentUser.Id;
+            if (!alreadyRated) {
+                UserRatings rate = new();
+                rate.RecipeId = recipeId;
+                rate.Rating = rating;
+                rate.UserRated = currentUser.Id;
 
-            _context.UserRatings.Add(rate);
+                _context.UserRatings.Add(rate);
 
-            return Json(new { message = "Added to favorites" });
+                return Json(new { message = "Thanks for rating!" });
+            }
+            else {
+                return Json(new { message = "Cant Rate more than once"});
+            }
+
         }
     }
 }

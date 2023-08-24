@@ -109,5 +109,6 @@ namespace RecipeWebsite.Models
     {
         public Recipe Recipe { get; set; }
         public User? CurrentUser { get; set; } = null;
+        public double Rating { get; set; } 
     }
 }
