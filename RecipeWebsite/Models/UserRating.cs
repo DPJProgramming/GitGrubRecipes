@@ -4,7 +4,7 @@ namespace RecipeWebsite.Models {
     public class UserRatings {
 
         /// <summary>
-        /// The recipe that a specific rating/user combonation belongs to
+        /// The recipe that a specific rating/user combination belongs to
         /// </summary>
         [ForeignKey("RecipeId")]
         public int RecipeId { get; set; }
@@ -12,7 +12,7 @@ namespace RecipeWebsite.Models {
         /// <summary>
         /// A user that has rated a specific recipe
         /// </summary>
-        public string UserRated { get; set; }
+        public string? UserRated { get; set; }
 
         /// <summary>
         /// A number value a user assigns to a recipe to represent the quality of the recipe

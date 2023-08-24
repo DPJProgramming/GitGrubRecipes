@@ -40,6 +40,9 @@ public class RecipeWebsiteContext : IdentityDbContext<User>
                 x.HasKey("UserId", "RecipeId");
                 x.ToTable("FavoriteRecipes");
             });
+
+        builder.Entity<UserRatings>()
+            .HasNoKey();
     }
 
     public DbSet<RecipeWebsite.Models.Recipe>? Recipe { get; set; }
@@ -48,5 +51,5 @@ public class RecipeWebsiteContext : IdentityDbContext<User>
 
     public DbSet<FavoriteRecipe> FavoriteRecipes { get; set; }
 
-    public DbSet<Rating> Ratings { get; set; }
+    public DbSet<UserRatings> UserRatings { get; set; }
 }
