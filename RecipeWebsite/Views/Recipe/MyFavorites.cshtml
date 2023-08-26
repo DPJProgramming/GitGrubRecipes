@@ -15,7 +15,7 @@
             <div class="col-md-4">
                 <a asp-action="Details" asp-route-id="@item.RecipeId" style="text-decoration: none; color: inherit;">
                     <div class="card mx-auto hover-card" style="width: 20rem;">
-                        <img src="@item.ImageUrl" class="card-img-top" alt="Recipe Image">
+                        <img src="~/img/@item.ImageUrl" class="card-img-top" onerror="this.src='/lib/images/ImgPlaceHolder.jpg'" alt="Recipe Image">
                         <div class="card-body">
                             <h4 class="card-text">@Html.DisplayFor(modelItem => item.Title)</h4>
                         </div>
