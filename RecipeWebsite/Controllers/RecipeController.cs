@@ -157,6 +157,13 @@ namespace RecipeWebsite.Controllers
             {
                 return NotFound();
             }
+            
+            //check if current user is not the recipe author
+            User currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser == null || recipe.Author == null || recipe.Author.Id != currentUser.Id) {
+                //MessageBox.Show("Access Denied");
+                return RedirectToAction("Details", new { id = recipe.RecipeId });
+            }
 
             var viewModel = new RecipeViewModel();
             viewModel.RecipeId = recipe.RecipeId;
