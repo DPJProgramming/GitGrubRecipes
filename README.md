@@ -1,6 +1,7 @@
-# Recipe Website
+# GitGrub Recipes
+This website acts as a digital recipe repository to archive your favorite recipes from Grandma's famous apple pie, to your very own culinary masterpiece. Discover new favorites from other users and share your feedback of their own recipes. 
 
-This website will showcase user's recipe that they share. A user will be able to create a recipe, favorite recipes they like, conveniently view those favorites, and view and comment on other user's recipes. They can also view their profile page which will show their info and a list of their recipes.
+## Features
 
 ## Build Team
 - https://github.com/DPJProgramming
