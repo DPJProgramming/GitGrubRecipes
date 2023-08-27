@@ -62,3 +62,11 @@ h5{
 .recipe-row{
     cursor: pointer;
 }
+
+.bottom_border {
+    border-bottom: 5px solid red;
+}
+
+.set-font {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+}
