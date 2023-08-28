@@ -155,6 +155,17 @@
                 descriptionCell.appendChild(description);
                 row.appendChild(descriptionCell);
 
+                var ratingCell = document.createElement("td");
+                var rating = document.createElement("p");
+                if (item.Rating !== undefined) {                   
+                    rating.textContent = item.Rating;
+                }
+                else{
+                    rating.textContent = "No Ratings Yet";
+                }
+                ratingCell.appendChild(rating);
+                row.appendChild(ratingCell);
+
                 tableBody.appendChild(row);
             });
             addRecipeClick();
