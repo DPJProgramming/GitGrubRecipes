@@ -2,43 +2,43 @@
   This website acts as a digital recipe repository to archive your favorite recipes from Grandma's famous apple pie, to your very own culinary masterpiece. Discover new favorites from other users and share your feedback of their own recipes. 
   
   <div align="center">
-    <img src="https://github.com/DPJProgramming/GitGrubRecipes/blob/AddReadMeFiles/ReadMeScreenShots/homeScreen.png" width="75%" align="center">
+    <img src="https://github.com/DPJProgramming/GitGrubRecipes/blob/master/ReadMeScreenShots/homeScreen.png" width="75%" align="center">
   </div>
   
   ## Features
   - #### <ins>Full CRUD functionality account management</ins>
   <div>
-    <img src="https://github.com/DPJProgramming/GitGrubRecipes/blob/AddReadMeFiles/ReadMeScreenShots/accountManagement.png" width="50%" border=solid black: >
+    <img src="https://github.com/DPJProgramming/GitGrubRecipes/blob/master/ReadMeScreenShots/accountManagement.png" width="50%" border=solid black: >
   </div>
   
   - #### <ins>Create Recipes with image uploading capability</ins>
   <div>
-    <img src="https://github.com/DPJProgramming/GitGrubRecipes/blob/AddReadMeFiles/ReadMeScreenShots/createRecipe.png" width="50%">
+    <img src="https://github.com/DPJProgramming/GitGrubRecipes/blob/master/ReadMeScreenShots/createRecipe.png" width="50%">
   </div>
   
   - #### <ins>Add/remove favorite recipes</ins>
   <div>
-    <img src="https://github.com/DPJProgramming/GitGrubRecipes/blob/AddReadMeFiles/ReadMeScreenShots/favorites.png" width="50%">
+    <img src="https://github.com/DPJProgramming/GitGrubRecipes/blob/master/ReadMeScreenShots/favorites.png" width="50%">
   </div>
     
   - #### <ins>CRUD functional comments on recipe page</ins>
   <div>
-    <img src="https://github.com/DPJProgramming/GitGrubRecipes/blob/AddReadMeFiles/ReadMeScreenShots/comments.png" width="50%">
+    <img src="https://github.com/DPJProgramming/GitGrubRecipes/blob/master/ReadMeScreenShots/comments.png" width="50%">
   </div>
     
   - #### <ins>Rate recipes</ins>
   <div>
-    <img src="https://github.com/DPJProgramming/GitGrubRecipes/blob/AddReadMeFiles/ReadMeScreenShots/rating.png" width="50%">
+    <img src="https://github.com/DPJProgramming/GitGrubRecipes/blob/master/ReadMeScreenShots/rating.png" width="50%">
   </div>
     
   - #### <ins>Sort recipes on the home page</ins>
   <div>
-    <img src="https://github.com/DPJProgramming/GitGrubRecipes/blob/AddReadMeFiles/ReadMeScreenShots/sorting.png" width="30%">
+    <img src="https://github.com/DPJProgramming/GitGrubRecipes/blob/master/ReadMeScreenShots/sorting.png" width="30%">
   </div>
     
   - #### <ins>Nutrition information API (https://calorieninjas.com)</ins>
   <div>
-    <img src="https://github.com/DPJProgramming/GitGrubRecipes/blob/AddReadMeFiles/ReadMeScreenShots/api.png" width="50%">
+    <img src="https://github.com/DPJProgramming/GitGrubRecipes/blob/master/ReadMeScreenShots/api.png" width="50%">
   </div>
   
   ## Dependencies
