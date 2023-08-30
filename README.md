@@ -1,4 +1,3 @@
-<div style="background-color: #cfcfcf;">
   <h1 align="center">GitGrub Recipes</h1>
   This website acts as a digital recipe repository to archive your favorite recipes from Grandma's famous apple pie, to your very own culinary masterpiece. Discover new favorites from other users and share your feedback of their own recipes. 
   
@@ -63,14 +62,3 @@
   ## Build Team
   - https://github.com/DPJProgramming
   - https://github.com/theisaiahcc
-</div>
-
-%%html
-<style>
-    .background {
-        background-color: #0074D9;
-    }
-    .green {
-        background-color: #2ECC40;
-    }
-</style>
