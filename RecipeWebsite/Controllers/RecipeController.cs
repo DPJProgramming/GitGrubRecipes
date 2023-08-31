@@ -424,20 +424,6 @@ namespace RecipeWebsite.Controllers
         }
 
         /// <summary>
-        /// Calculates the mean rating for a recipe
-        /// </summary>
-        /// <param name="recipeId"></param>
-        /// <returns></returns>
-        //public double getRecipeRating(int recipeId) {
-        //    int ratingCount = _context.UserRatings.Count(r => r.RecipeId == recipeId);
-        //    int ratingSum = _context.UserRatings.Where(r => r.RecipeId == recipeId).Sum(r => r.Rating);
-
-        //    setRecipeRating(recipeId, ratingCount, ratingSum);
-
-        //    return ratingSum / ratingCount;
-        //}
-
-        /// <summary>
         /// Sets a rating for a recipe from the currently logged in user
         /// </summary>
         /// <param name="recipeId"></param>
@@ -470,7 +456,7 @@ namespace RecipeWebsite.Controllers
         }
 
         /// <summary>
-        /// Sets the newly calculated rating to the recipe
+        /// Sets the newly calculated rating to the recipe after a user rates a recipe
         /// </summary>
         /// <param name="recipeId"></param>
         /// <param name="ratingCount"></param>

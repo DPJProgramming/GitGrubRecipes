@@ -70,3 +70,16 @@ h5{
 .set-font {
     font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
 }
+
+.ingredients-container {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+}
+
+.ingredient-row {
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid gray;
+    padding: 5px 0;
+}

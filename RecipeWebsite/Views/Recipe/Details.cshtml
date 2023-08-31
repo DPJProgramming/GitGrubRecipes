@@ -63,6 +63,7 @@
 </div>
 <br />
 
+<!--Recipe section-->
 <div>
     <img src="~/img/@Model.Recipe.ImageUrl" onerror="this.src='/lib/images/ImgPlaceHolder.jpg'" alt="image" width="300" />
 
@@ -129,7 +130,10 @@
         @foreach (Comment comment in Model.Recipe.Comments){
             <div class="card">
                 <div class="card-header">
-                    <h5 id="comment-author" data-model="@comment.CommentAuthor.Id">@comment.CommentAuthor.UserName</h5>
+                    @if (comment.CommentAuthor != null)
+                    {
+                        <h5 id="comment-author" data-model="@comment.CommentAuthor.Id">@comment.CommentAuthor.UserName</h5>
+                    }
                 </div>
 
                 <div class="card-body">
@@ -157,21 +161,6 @@
     <br />
 }
 
-<style>
-    .ingredients-container {
-        display: flex;
-        flex-direction: column;
-        width: 50%;
-    }
-
-    .ingredient-row {
-        display: flex;
-        justify-content: space-between;
-        border-bottom: 1px solid gray;
-        padding: 5px 0;
-    }
-</style>
-
 <!-- code for add to favorites, comments and rating recipe-->
 @section Scripts{
 
@@ -181,7 +170,6 @@
             var recipeId = $('#favorite').data('model');
 
             $('#favorite').click(function () {
-                //Send data to the server
                 $.ajax({
                     url: '/Recipe/ToggleFavorite',
                     type: 'POST',
@@ -189,7 +177,6 @@
                     contentType: 'application/json'
                 })
                     .done(function (result) {
-                        // alert(result.message);
                         if (result.message === "Added to favorites") {
                             $('#favorite').text("Remove from Favorites");
                         } else {
@@ -208,7 +195,6 @@
         $(document).ready(function () {
             ;
             $('#confirm-comment').click(function () {
-                //text from comment textbox
                 var commentText = $('#comment-text').val();
 
                 //converts the current recipe into data that can be sent
