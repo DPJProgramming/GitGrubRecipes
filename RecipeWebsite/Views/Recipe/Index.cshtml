@@ -25,30 +25,9 @@
 <br />
 <br />
 
-@{
-    //for sorting recipes in recipe table from get create in recipe controller
-    //IEnumerable<Recipe> sortedRecipes = Model.OrderBy(a => a.DateCreated);
-}
-
+<!--Recipe rows in table are populated by javascript-->
 <table id="show-recipes">
-    <tbody>
-        @*if using recipe controller (no sorting) to populate list. otherwise javascript is used*@
-        @*@foreach (var item in sortedRecipes)
-        {
-            <tr class=" mx-auto hover-card recipe-row" data-href="@Url.Action("Details", new { id = item.RecipeId })">
-                <td>
-                    <div style="height: 100px; overflow: hidden">
-                        <img src="@item.ImageUrl" alt="Recipe-Picture" width="100"/> 
-                    </div>
-                </td>
-                <td>
-                    <h5 asp-action="Details" asp-route-id="@item.RecipeId">@Html.DisplayFor(modelItem => item.Title)</h5>
-                </td>
-                <td asp-action="Details" asp-route-id="@item.RecipeId">
-                    <p asp-action="Details" asp-route-id="@item.RecipeId">@Html.DisplayFor(modelItem => item.Description)</p>
-                </td>
-            </tr> 
-        }*@
+    <tbody>       
     </tbody>
 </table>
 
@@ -66,7 +45,6 @@
 }
 
 @section Scripts{
-
     <script>
         var sortedRecipes = @Html.Raw(serializedModel);
 
