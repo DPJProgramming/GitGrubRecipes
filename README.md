@@ -1,5 +1,5 @@
   <h1 align="center">GitGrub Recipes</h1>
-  This website acts as a digital recipe repository to archive your favorite recipes from Grandma's famous apple pie, to your very own culinary masterpiece. Discover new favorites from other users and share your feedback of their own recipes. 
+  A website as a digital repository for your favorite recipes from Grandma's famous apple pie, to your very own culinary masterpiece. Discover new favorites from other users and share your feedback of their own recipes. 
   
   <div align="center">
     <img src="https://github.com/DPJProgramming/GitGrubRecipes/blob/master/ReadMeScreenShots/homeScreen.png" width="75%" align="center">
