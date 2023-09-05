@@ -67,12 +67,5 @@ app.MapRazorPages();
 
 app.Run();
 
-public static partial class Program {
-    public static string apiKey() {
-        var builder = WebApplication.CreateBuilder();
-        return builder.Configuration.GetSection("NutritionApi").Value;
-    }
-}
-
 
 
