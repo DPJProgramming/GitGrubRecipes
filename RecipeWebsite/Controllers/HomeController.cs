@@ -17,6 +17,8 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using NuGet.Packaging.Signing;
 using System.Xml.Linq;
+using System.Net.Http.Headers;
+using static System.Net.Http.HttpClient;
 
 namespace RecipeWebsite.Controllers {
     public class HomeController : Controller {
@@ -45,9 +47,25 @@ namespace RecipeWebsite.Controllers {
         /// </summary>
         /// <param name="result"></param>
         /// <returns></returns>
-        public IActionResult NutritionModal(string result) {
-            
-            var jsonData = JsonConvert.DeserializeObject<dynamic>(result);
+        [HttpPost]
+        public async Task<IActionResult> NutritionModal([FromBody] string foodText) {
+
+            //String foodQuery = foodText.GetProperty("Food").GetString();
+            String apiKey = ApiHelper.apiKey();
+
+            //Http request for api
+            HttpClient client = new();
+            client.DefaultRequestHeaders.Accept.Clear();
+            //client.DefaultRequestHeaders.Accept.Add(
+            //    new MediaTypeWithQualityHeaderValue("https://api.calorieninjas.com/v1"));
+            client.DefaultRequestHeaders.Add("X-Api-Key", apiKey);
+            //client.DefaultVersionPolicy
+
+            string nutrition = await client.GetStringAsync(
+                 "https://api.calorieninjas.com/v1/nutrition?query=" + foodText);
+
+            //rest of code
+            var jsonData = JsonConvert.DeserializeObject<dynamic>(nutrition);
 
             List<NutritionInfoDTO> foodList = new List<NutritionInfoDTO>();
 

@@ -60,7 +60,7 @@
     </footer>
 
     @{
-        var api = Program.apiKey();
+        var api = ApiHelper.apiKey();
     }
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -68,39 +68,61 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     <script>
-        function displayNutrition(result) {
+        function sendApi() {
+            var food = $('#api-request').val();
+            //var sendData = {
+            //    Food: food
+            //};
             $.ajax({
-                method: 'GET',
+                method: 'POST',
                 url: '/Home/NutritionModal',
-                data: { result: JSON.stringify(result) }, 
+                data: JSON.stringify(food), 
+                contentType: 'application/json',
                 success: function (response) {
                     $('#nutritionModal .modal-body').html(response); 
                     $('#nutritionModal').modal('show'); 
                 },
                 error: function ajaxError(jqXHR) {
+                    alert("error");
                     console.error('Error: ', jqXHR.responseText);
                 }
             });
         }
+
+        //original send api request
+        //function displayNutrition(result) {
+        //$.ajax({
+        //    method: 'GET',
+        //    url: '/Home/NutritionModal',
+        //    data: { result: JSON.stringify(result) },
+        //    success: function (response) {
+        //        $('#nutritionModal .modal-body').html(response);
+        //        $('#nutritionModal').modal('show');
+        //    },
+        //    error: function ajaxError(jqXHR) {
+        //        console.error('Error: ', jqXHR.responseText);
+        //    }
+        //});
+        //}
       
         //Nutrition Information API https://calorieninjas.com/
-        function sendApi() {
-            var apiKey = '@Html.Raw(api)';
-            var food = $('#api-request').val();
-            $.ajax({
-                method: 'GET',
-                url: 'https://api.calorieninjas.com/v1/nutrition?query=' + food,
-                headers: { 'X-Api-Key': apiKey},
-                contentType: 'application/json',
-                success: function (result) {
-                    console.log(result);
-                    displayNutrition(result);
-                },
-                error: function ajaxError(jqXHR) {
-                    console.error('Error: ', jqXHR.responseText);
-                }
-            });
-        }
+        //function sendApi() {
+        //    var apiKey = '@Html.Raw(api)';
+        //    var food = $('#api-request').val();
+        //    $.ajax({
+        //        method: 'GET',
+        //        url: 'https://api.calorieninjas.com/v1/nutrition?query=' + food,
+        //        headers: { 'X-Api-Key': apiKey},
+        //        contentType: 'application/json',
+        //        success: function (result) {
+        //            console.log(result);
+        //            displayNutrition(result);
+        //        },
+        //        error: function ajaxError(jqXHR) {
+        //            console.error('Error: ', jqXHR.responseText);
+        //        }
+        //    });
+        //}
     </script>
     
     @await RenderSectionAsync("Scripts", required: false)
