@@ -49,45 +49,50 @@ namespace RecipeWebsite.Controllers {
         /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> NutritionModal([FromBody] string foodText) {
-
-            //String foodQuery = foodText.GetProperty("Food").GetString();
             String apiKey = ApiHelper.apiKey();
 
             //Http request for api
             HttpClient client = new();
             client.DefaultRequestHeaders.Accept.Clear();
-            //client.DefaultRequestHeaders.Accept.Add(
-            //    new MediaTypeWithQualityHeaderValue("https://api.calorieninjas.com/v1"));
             client.DefaultRequestHeaders.Add("X-Api-Key", apiKey);
-            //client.DefaultVersionPolicy
 
+            //get response from api
             string nutrition = await client.GetStringAsync(
                  "https://api.calorieninjas.com/v1/nutrition?query=" + foodText);
 
-            //rest of code
+            //create dynamic object from nutrition to later convert to a list
             var jsonData = JsonConvert.DeserializeObject<dynamic>(nutrition);
 
-            List<NutritionInfoDTO> foodList = new List<NutritionInfoDTO>();
+            return PartialView("_NutritionModal", createFoodList(jsonData));
+        }
 
-            foreach (var data in jsonData["items"]) {
+        /// <summary>
+        /// Creates a list of food items for return to the nutrition modal
+        /// </summary>
+        /// <param name="jsonData"></param>
+        /// <returns></returns>
+        public List<NutritionInfoDTO> createFoodList(dynamic jsonData) {
+            List<NutritionInfoDTO> foodList = new();
+
+            foreach (var info in jsonData["items"]) {
                 NutritionInfoDTO food = new NutritionInfoDTO();
 
-                food.name = data["name"].ToString();
-                food.calories = Math.Round((float)data["calories"], 2);
-                food.serving_size_g = (int)data["serving_size_g"];
-                food.fat_total_g = Math.Round((float)data["fat_total_g"], 2);
-                food.fat_saturated_g = Math.Round((float)data["fat_saturated_g"], 2);
-                food.protein_g = Math.Round((float)data["protein_g"], 2);
-                food.sodium_mg = (int)data["sodium_mg"];
-                food.potassium_mg = (int)data["potassium_mg"];
-                food.cholesterol_mg = (int)data["cholesterol_mg"];
-                food.carbohydrates_total_g = Math.Round((float)data["carbohydrates_total_g"], 2);
-                food.fiber_g = Math.Round((float)data["fiber_g"], 2);
-                food.sugar_g = Math.Round((float)data["sugar_g"], 2);
+                food.name = info["name"].ToString();
+                food.calories = Math.Round((float)info["calories"], 2);
+                food.serving_size_g = (int)info["serving_size_g"];
+                food.fat_total_g = Math.Round((float)info["fat_total_g"], 2);
+                food.fat_saturated_g = Math.Round((float)info["fat_saturated_g"], 2);
+                food.protein_g = Math.Round((float)info["protein_g"], 2);
+                food.sodium_mg = (int)info["sodium_mg"];
+                food.potassium_mg = (int)info["potassium_mg"];
+                food.cholesterol_mg = (int)info["cholesterol_mg"];
+                food.carbohydrates_total_g = Math.Round((float)info["carbohydrates_total_g"], 2);
+                food.fiber_g = Math.Round((float)info["fiber_g"], 2);
+                food.sugar_g = Math.Round((float)info["sugar_g"], 2);
 
                 foodList.Add(food);
             }
-            return PartialView("_NutritionModal", foodList);
+            return foodList;
         }
     }
 
