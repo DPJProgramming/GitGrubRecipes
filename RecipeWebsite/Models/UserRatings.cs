@@ -17,7 +17,7 @@ namespace RecipeWebsite.Models {
         public int RecipeId { get; set; }
 
         /// <summary>
-        /// A user that has rated a specific recipe
+        /// A user identified by their id that has rated a specific recipe
         /// </summary>
         public string? UserRated { get; set; }
 
