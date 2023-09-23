@@ -75,10 +75,18 @@ namespace RecipeWebsite.Controllers
                 currentUser = _context.Users.Include(u => u.MyFavorites).FirstOrDefault(u => u.Id == currentUser.Id);
             }
 
+            UserRatings currentUsersRating = _context.UserRatings.Where(r => r.RecipeId == recipe.RecipeId && r.UserRated == currentUser.Id).FirstOrDefault();
+            int usersRatedNumber = -1;
+
+            if(currentUsersRating != null) {
+                usersRatedNumber = currentUsersRating.Rating;
+            }
+
             var viewModel = new RecipeDetailsViewModel {
                 Recipe = recipe,
                 CurrentUser = currentUser,
-                Rating = recipe.Rating
+                Rating = recipe.Rating,
+                CurrentUsersRating = usersRatedNumber
             };
 
             return View(viewModel);
