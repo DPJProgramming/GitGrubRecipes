@@ -3,6 +3,8 @@
 @inject SignInManager<User> SignInManager
 @inject UserManager<User> UserManager
 
+<button type="button" id="open-measurement-modal" class="btn btn-outline-info" onclick="openMeasureModal()">Convert Measurements</button>
+
 <label for="nutrition">Nutrition Information</label>
 <input id="api-request" placeholder="Enter an Ingredient">
 <button type="button" id="send-api" class="btn btn-outline-info" onclick="sendApi()">Submit</button>
