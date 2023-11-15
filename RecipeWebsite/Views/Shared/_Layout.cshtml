@@ -58,51 +58,54 @@
         <div class="modal-dialog modal-dialog-scrollable" role="document">
             <div class="modal-content">
                 <div class="modal-body">
-                    <form>
-                        <h4>From</h4>
-                        <br />
+                    <h4>From</h4>
+                    <br />
 
-                        <select id="unit" class="btn btn-secondary">
-                            <option value="tsp">tsp</option>
-                            <option value="tbsp">tbsp</option>
-                            <option value="cup">cup</option>
-                            <option value="gram">gram</option>
-                            <option value="oz">fl ounce</option>
-                            <option value="pint">pint</option>
-                            <option value="quart">quart</option>
-                            <option value="gallon">gallon</option>
-                            <option value="ml">milliliter</option>
-                            <option value="liter">liter</option>
-                            <option value="kl">Kiloliter</option>
-                        </select>
+                    <select id="unit1" class="btn btn-secondary">
+                        <option value="tsp">tsp</option>
+                        <option value="tbsp">tbsp</option>
+                        <option value="cup">cup</option>
+                        <option value="oz">fl ounce</option>
+                        <option value="pt">pint</option>
+                        <option value="qt">quart</option>
+                        <option value="gal">gallon</option>
+                        <option value="ml">milliliter</option>
+                        <option value="l">liter</option>
+                    </select>
 
-                        <label for="measure-number" class="text-dark">How Much</label>
-                        <input id="measure-number" type="text" />
-                        <br />
-                        <br />
+                    <label for="measure-number" class="text-dark">How Much</label>
+                    <input id="amount" type="text" />
+                    <br />
+                    <br />
 
 
-                        <h4>To</h4>
-                        <br />
+                    <h4>To</h4>
+                    <br />
 
-                        <select id="unit" class="btn btn-secondary">
-                            <option value="tsp">tsp</option>
-                            <option value="tbsp">tbsp</option>
-                            <option value="cup">cup</option>
-                            <option value="gram">gram</option>
-                            <option value="oz">fl ounce</option>
-                            <option value="pint">pint</option>
-                            <option value="quart">quart</option>
-                            <option value="gallon">gallon</option>
-                            <option value="ml">milliliter</option>
-                            <option value="liter">liter</option>
-                            <option value="kl">Kiloliter</option>
-                        </select>
+                    <select id="unit2" class="btn btn-secondary">
+                        <option value="tsp">tsp</option>
+                        <option value="tbsp">tbsp</option>
+                        <option value="cup">cup</option>
+                        <option value="oz">fl ounce</option>
+                        <option value="pt">pint</option>
+                        <option value="qt">quart</option>
+                        <option value="gal">gallon</option>
+                        <option value="ml">milliliter</option>
+                        <option value="l">liter</option>
+                    </select>
+                    <br />
+                    <br />
 
-                        <label for="measure-number" class="text-dark">How much</label>
-                        <input id="measure-number" type="text" />
+                    <button class="btn btn-outline-info" value="convert" onclick="convert()">Convert</button>
 
-                    </form>
+                    <label for="measurement-calculation-text">Result</label>
+                    <input type="text" id="measurement-calculation-text" disabled/>
+                    <br />
+                    <br />
+
+                    <h5 id="result-text">
+
+                    </h5>
                 </div>
             </div>
         </div>
@@ -146,6 +149,36 @@
             $('#measurementModal .modal-body').html();
             $('#measurementModal').modal('show');
         }
+
+        function convert(){
+            //get units of measurement
+            var unit1 = $('#unit1').val();
+            var unit2 = $('#unit2').val();
+
+            //get amount to convert
+            var amount = $('#amount').val();
+
+            const multipliers = new Map();
+
+            multipliers.set("tsp", 48);
+            multipliers.set("tbsp", 16);
+            multipliers.set("cup", 1);
+            multipliers.set("oz", 8);
+            multipliers.set("pt", .5);
+            multipliers.set("qt", .25);
+            multipliers.set("gal", .06);
+            multipliers.set("ml", 236.59);
+            multipliers.set("l", .24);
+
+            var conversion = (multipliers.get(unit2) * amount) / multipliers.get(unit1);
+            conversion = parseFloat(conversion.toFixed(3));
+
+            var result = document.getElementById("measurement-calculation-text");
+            var displayValue = conversion.toString();
+            result.value = displayValue;
+            var resultMessage = document.getElementById("result-text");
+            resultMessage.innerHTML = "There is " + displayValue + " " + unit2 + " in " + amount + " " + unit1 + "(s)";
+        } 
     </script>
     
     @await RenderSectionAsync("Scripts", required: false)
