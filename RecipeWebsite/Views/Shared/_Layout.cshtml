@@ -151,33 +151,38 @@
         }
 
         function convert(){
-            //get units of measurement
-            var unit1 = $('#unit1').val();
-            var unit2 = $('#unit2').val();
-
             //get amount to convert
             var amount = $('#amount').val();
 
-            const multipliers = new Map();
+            if(!(isNaN(amount) || amount == "")){
+                //get units of measurement
+                var unit1 = $('#unit1').val();
+                var unit2 = $('#unit2').val();
 
-            multipliers.set("tsp", 48);
-            multipliers.set("tbsp", 16);
-            multipliers.set("cup", 1);
-            multipliers.set("oz", 8);
-            multipliers.set("pt", .5);
-            multipliers.set("qt", .25);
-            multipliers.set("gal", .06);
-            multipliers.set("ml", 236.59);
-            multipliers.set("l", .24);
+                const multipliers = new Map();
 
-            var conversion = (multipliers.get(unit2) * amount) / multipliers.get(unit1);
-            conversion = parseFloat(conversion.toFixed(3));
+                multipliers.set("tsp", 48);
+                multipliers.set("tbsp", 16);
+                multipliers.set("cup", 1);
+                multipliers.set("oz", 8);
+                multipliers.set("pt", .5);
+                multipliers.set("qt", .25);
+                multipliers.set("gal", .06);
+                multipliers.set("ml", 236.59);
+                multipliers.set("l", .24);
 
-            var result = document.getElementById("measurement-calculation-text");
-            var displayValue = conversion.toString();
-            result.value = displayValue;
-            var resultMessage = document.getElementById("result-text");
-            resultMessage.innerHTML = "There is " + displayValue + " " + unit2 + " in " + amount + " " + unit1 + "(s)";
+                var conversion = (multipliers.get(unit2) * amount) / multipliers.get(unit1);
+                conversion = parseFloat(conversion.toFixed(3));
+
+                var result = document.getElementById("measurement-calculation-text");
+                var displayValue = conversion.toString();
+                result.value = displayValue;
+                var resultMessage = document.getElementById("result-text");
+                resultMessage.innerHTML = "There is " + displayValue + " " + unit2 + " in " + amount + " " + unit1 + "(s)";
+            }
+            else{
+                alert("Please enter a valid amount");
+            }
         } 
     </script>
     
