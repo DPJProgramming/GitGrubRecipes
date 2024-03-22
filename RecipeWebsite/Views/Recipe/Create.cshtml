@@ -18,30 +18,26 @@
     <br />
 
     <label asp-for="Category">What Type of Dish is This?</label>
-    <select class="btn btn-secondary" asp-for="Category">
+    <select class="btn btn-secondary" asp-for="Category" id="select-category" onchange="subcategory()">
         <option value="Breakfast">Breakfast</option>
         <option value="Lunch">Lunch</option>
         <option value="Dinner">Dinner</option>
+        <option value="Dessert">Dessert</option>
 		<option value="Meat">Meat</option>
 		<option value="Bread">Bread</option>
-        <option value="Vegetable">Vegetable</option>
         <option value="Dairy">Dairy</option>
-        <option value="Beverage">Beverage</option>
-        <option value="Dessert">Dessert</option>
         <option value="Soup">Soup</option>
         <option value="Salad">Salad</option>
-        <option value="Pasta">Pasta</option>
+        <option value="Beverage">Beverage</option>
     </select>
     <span asp-validation-for="Category" class="text-danger"></span>
+    <br />
+    <br />
 
     <!--for use when subcategory is implemented-->
-    <label hidden asp-for="SubCategory">What Type of Food is this?</label>
-    <select hidden class="btn btn-secondary" asp-for="SubCategory">
-        <option value="Beef">Beef</option>
-        <option value="Poultry">Poultry</option>
-        <option value="Egg">Egg</option>
-        <option value="Pork">Pork</option>
-        <option value="Fish">Fish</option>
+    <label for="select-subcategory" asp-for="SubCategory">What Type of Food is this?</label>
+    <select class="btn btn-secondary" asp-for="SubCategory" id="select-subcategory">
+        <option value="No Subcategory">No Subcategory</option>
     </select>
     <span asp-validation-for="SubCategory" class="text-danger"></span>
     <br />
@@ -130,5 +126,54 @@
                 $(this).closest(".form-group").remove();
             });
         });
+
+        function subcategory() {
+            alert("hello");
+            var catElement = document.getElementById('select-category');
+            var category = catElement.value;
+            var subcategories = [];
+
+            switch (category) {
+                case "Breakfast":
+                    subcategories = ['Sweet', 'Savory', 'Other Breakfast'];
+                    break;
+                case "Lunch":
+                    subcategories = ['Sandwich', 'Soup', 'Salad', 'Pizza', 'Other Lunch'];
+                    break;
+                case "Dinner":
+                    subcategories = ['Casserole', 'Pizza', 'Roast', 'BBQ', 'Other Dinner'];
+                    break;
+                case "Dessert":
+                    subcategories = ['Cookie', 'Cake', 'Pie', 'Pudding', 'Other Dessert'];
+                    break;
+                case "Meat":
+                    subcategories = ['Poultry', 'Pork', 'Beef', 'Other Meat'];
+                    break;
+                case "Bread":
+                    subcategories = ['Wheat', 'White', 'Multigrain', 'Sweet', 'Other Bread'];
+                    break;
+                case "Dairy":
+                    subcategories = ['Milk', 'Yogurt', 'Cheese', 'Other Dairy'];
+                    break;
+                case "Soup":
+                    subcategories = ['Thin', 'Chowder', 'Bisque', 'Broth/Stock', 'Other Soup'];
+                    break;
+                case "Salad":
+                    subcategories = ['Fruit', 'Vegetable', 'Pasta', 'Potato', 'Other Salad'];
+                    break;
+                case "Beverage":
+                    subcategories = ['Soda', 'Alchoholic', 'Juice', 'Dairy', 'Other Beverage'];
+                    break;
+                default:
+                    subcategories = ['No Subcategory'];
+            }
+            var subCatElement = document.getElementById('select-subcategory');
+            for (var i = 0; i < subcategories.length; i++) {
+                var option = document.createElement("option");
+                option.value = subcategories[i];
+                option.innerText = subcategories[i];
+                subCatElement.appendChild(option);
+            }
+        }
     </script>
 }

@@ -178,7 +178,7 @@
                 var displayValue = conversion.toString();
                 result.value = displayValue;
                 var resultMessage = document.getElementById("result-text");
-                resultMessage.innerHTML = "There is " + displayValue + " " + unit2 + " in " + amount + " " + unit1 + "(s)";
+                resultMessage.innerHTML = amount + " " + unit1 + "(s) = " + displayValue + " " + unit2;
             }
             else{
                 alert("Please enter a valid amount");
