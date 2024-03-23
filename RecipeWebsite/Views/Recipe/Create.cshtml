@@ -38,6 +38,10 @@
     <label for="select-subcategory" asp-for="SubCategory">What Type of Food is this?</label>
     <select class="btn btn-secondary" asp-for="SubCategory" id="select-subcategory">
         <option value="No Subcategory">No Subcategory</option>
+        <option value="Sweet">Sweet</option>
+        <option value="Savory">Savory</option>
+        <option value="Breakfast Side">Breakfast Side</option>
+        <option value="Other Breakfast">Other Breakfast</option>
     </select>
     <span asp-validation-for="SubCategory" class="text-danger"></span>
     <br />
@@ -167,7 +171,9 @@
                 default:
                     subcategories = ['No Subcategory'];
             }
+
             var subCatElement = document.getElementById('select-subcategory');
+            subCatElement.innerHTML = '<option value="No Subcategory">No Subcategory</option>';
             for (var i = 0; i < subcategories.length; i++) {
                 var option = document.createElement("option");
                 option.value = subcategories[i];
