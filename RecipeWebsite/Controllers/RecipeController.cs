@@ -113,11 +113,14 @@ namespace RecipeWebsite.Controllers
         public async Task<IActionResult> Create(RecipeViewModel viewModel)
         {
             //configure file upload url with user's file
-            string fileName = Guid.NewGuid().ToString();
-            fileName += Path.GetExtension(viewModel.ImageUrl?.FileName);
-            string uploadPath = Path.Combine(_environment.WebRootPath, "img", fileName);
-            using Stream fileStream = new FileStream(uploadPath, FileMode.Create);
-            await viewModel.ImageUrl.CopyToAsync(fileStream);
+            string fileName = "";
+            if (viewModel.ImageUrl != null) {
+                fileName = Guid.NewGuid().ToString();
+                fileName += Path.GetExtension(viewModel.ImageUrl?.FileName);
+                string uploadPath = Path.Combine(_environment.WebRootPath, "img", fileName);
+                using Stream fileStream = new FileStream(uploadPath, FileMode.Create);
+                await viewModel.ImageUrl.CopyToAsync(fileStream);
+            }
 
             if (ModelState.IsValid)
             {
@@ -126,7 +129,7 @@ namespace RecipeWebsite.Controllers
                 recipe.ImageUrl = fileName; //!string.IsNullOrEmpty(viewModel.ImageUrl) ? viewModel.ImageUrl : "https://i.imgur.com/zIAshBo.png";
                 recipe.Description = viewModel.Description;
                 recipe.Category = viewModel.Category;
-                recipe.SubCategory = ".";
+                recipe.SubCategory = viewModel.SubCategory;
                 recipe.Directions = viewModel.Directions;
                 recipe.DateCreated = DateTimeOffset.Now;
 
